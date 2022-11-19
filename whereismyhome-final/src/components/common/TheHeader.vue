@@ -23,7 +23,9 @@
         </li>
         |
         <li class="nav-item">
-          <router-link to="/login" class="nav-link">로그인</router-link>
+          <router-link :to="{ name: 'login' }" class="nav-link"
+            >로그인</router-link
+          >
         </li>
         <div class="dropdown">
           <button class="dropbtn">

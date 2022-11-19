@@ -1,18 +1,14 @@
 <template>
   <div class="container">
-    <user-login></user-login>
+    <router-view :key="$route.fullPath"></router-view>
   </div>
 </template>
 
 <script>
-import UserLogin from "@/components/user/UserLogin.vue";
-
 export default {
   name: "AppUser",
 
-  components: {
-    UserLogin,
-  },
+  components: {},
 
   data() {
     return {};
