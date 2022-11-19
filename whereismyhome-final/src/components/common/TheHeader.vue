@@ -21,6 +21,7 @@
         <li class="nav-item">
           <router-link to="/notice" class="nav-link">공지사항</router-link>
         </li>
+        |
         <li class="nav-item">
           <router-link to="/login" class="nav-link">로그인</router-link>
         </li>
@@ -32,7 +33,11 @@
             <router-link to="/qna1" class="nav-link">문의하기</router-link>
             <router-link to="/qna2" class="nav-link">문의내역</router-link>
             <router-link to="/qna3" class="nav-link">내정보</router-link>
-            <router-link to="/logout" class="nav-link">로그아웃</router-link>
+            <router-link to="/logout" class="nav-link"
+              >로그아웃<font-awesome-icon
+                class="logout-icon"
+                icon="fa-solid fa-right-from-bracket"
+            /></router-link>
           </div>
         </div>
       </ul>
@@ -58,7 +63,11 @@ export default {
 .container {
   display: flex;
   justify-content: space-between;
-  margin: 8px;
+  padding: 8px;
+}
+
+.navbar-brand {
+  margin: 5px 0 0 10px;
 }
 
 .navbar-nav {
@@ -68,11 +77,11 @@ export default {
 }
 
 .navbar-nav .nav-item {
-  margin-right: 20px;
+  margin: 0 10px;
 }
 
 .navbar-nav a.nav-link {
-  color: #2c3e50;
+  color: black;
 }
 
 .navbar-nav a.router-link-exact-active {
@@ -83,9 +92,9 @@ export default {
 .dropbtn {
   border: none;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: bold;
   font-size: large;
-  background-color: #ffffff;
+  background-color: transparent;
 }
 
 .dropdown {
@@ -100,14 +109,21 @@ export default {
   position: absolute;
   right: 0;
   min-width: 160px;
+  background-color: #ffffff;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  border-radius: 5px;
 }
 
 /* Links inside the dropdown */
 .dropdown-content a {
   padding: 12px 16px;
   display: block;
+  border-radius: 5px;
+}
+
+.logout-icon {
+  padding-left: 5px;
 }
 
 .dropdown-content a:hover {

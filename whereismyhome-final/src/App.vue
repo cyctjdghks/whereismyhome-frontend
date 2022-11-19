@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <the-header></the-header>
+    <the-header v-if="$route.name !== 'home'"></the-header>
     <router-view></router-view>
   </div>
 </template>
@@ -23,6 +23,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 body {
