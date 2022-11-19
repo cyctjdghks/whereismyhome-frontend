@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <the-header v-if="$route.name !== 'home'"></the-header>
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
   </div>
 </template>
 

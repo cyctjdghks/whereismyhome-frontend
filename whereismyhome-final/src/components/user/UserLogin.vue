@@ -30,7 +30,9 @@
             ><input type="checkbox" name="saveId" value="saveId" />아이디
             저장</label
           >
-          <router-link to="/join" class="moveJoin">회원가입</router-link>
+          <router-link :to="{ name: 'join' }" class="moveJoin"
+            >회원가입</router-link
+          >
         </div>
         <button type="button" @click="confirm">로그인</button>
       </form>
@@ -73,9 +75,13 @@ export default {
 </script>
 
 <style scoped>
+section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
 .container {
   margin: auto;
-  margin-top: 80px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
