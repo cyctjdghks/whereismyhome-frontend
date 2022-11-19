@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <user-login></user-login>
   </div>
 </template>
@@ -24,4 +24,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>
