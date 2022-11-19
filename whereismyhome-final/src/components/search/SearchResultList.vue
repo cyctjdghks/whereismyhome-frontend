@@ -22,7 +22,7 @@ export default {
 .result-container {
   width: 50%;
   height: 392px;
-  border-right: 1px solid rgb(231, 231, 231);
+  border-right: 1px solid #e7e7e7;
   padding: 30px 50px 30px 60px;
 }
 
