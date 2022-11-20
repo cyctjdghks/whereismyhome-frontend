@@ -8,7 +8,7 @@
           <label for="userid">아이디</label>
           <input
             id="userid"
-            v-model="user.userid"
+            v-model="user.userId"
             required
             placeholder="아이디 입력"
             @keyup.enter="confirm"
@@ -19,9 +19,10 @@
           <input
             type="password"
             id="userpwd"
-            v-model="user.userpwd"
+            v-model="user.userPassword"
             required
             placeholder="비밀번호 입력"
+            autocomplete="on"
             @keyup.enter="confirm"
           />
         </div>
@@ -29,7 +30,7 @@
           <label for="username">이름</label>
           <input
             id="username"
-            v-model="user.username"
+            v-model="user.userName"
             required
             placeholder="이름 입력"
             @keyup.enter="confirm"
@@ -39,7 +40,7 @@
           <label for="useremail">이메일</label>
           <input
             id="useremail"
-            v-model="user.useremail"
+            v-model="user.userEmail"
             required
             placeholder="이메일 입력"
             @keyup.enter="confirm"
@@ -49,7 +50,7 @@
           <label for="userphone">휴대폰 번호</label>
           <input
             id="userphone"
-            v-model="user.userphone"
+            v-model="user.userPhone"
             required
             placeholder="휴대폰 번호 입력"
             @keyup.enter="confirm"
@@ -62,18 +63,40 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
   name: "UserRegister",
 
   data() {
     return {
-      user: {},
+      user: {
+        userId: null,
+        userPassword: null,
+        userName: null,
+        userEmail: null,
+        userPhone: null,
+      },
     };
   },
 
-  mounted() {},
+  computed: {
+    ...mapState(memberStore, ["isJoin"]),
+  },
 
-  methods: {},
+  methods: {
+    ...mapActions(memberStore, ["userJoin"]),
+    async confirm() {
+      await this.userJoin(this.user);
+      if (this.isJoin) {
+        this.$router.push({ name: "login" });
+      } else {
+        alert(`회원가입 실패 T-T`);
+      }
+    },
+  },
 };
 </script>
 
