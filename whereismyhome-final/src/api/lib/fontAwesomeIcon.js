@@ -6,15 +6,21 @@ import {
   faCircleUser,
   faMagnifyingGlass,
   faRightFromBracket,
+  faLeftLong,
   faHeart as fasHeart,
 } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as farHeart } from "@fortawesome/free-regular-svg-icons";
+import {
+  faComment,
+  faHeart as farHeart,
+} from "@fortawesome/free-regular-svg-icons";
 
 /* add icons to the library */
 library.add(
   faCircleUser,
   faMagnifyingGlass,
   faRightFromBracket,
+  faLeftLong,
+  faComment,
   fasHeart,
   farHeart
 );

@@ -19,6 +19,24 @@ const routes = [
     path: "/notice",
     name: "notice",
     component: () => import("@/views/AppNotice.vue"),
+    redirect: "/",
+    children: [
+      {
+        path: "/",
+        name: "noticeList",
+        component: () => import("@/components/notice/NoticeList.vue"),
+      },
+      {
+        path: "/view/:no",
+        name: "noticeView",
+        component: () => import("@/components/notice/NoticeView.vue"),
+      },
+      {
+        path: "/write",
+        name: "noticeWrite",
+        component: () => import("@/components/notice/NoticeWrite.vue"),
+      },
+    ],
   },
   {
     path: "/user",

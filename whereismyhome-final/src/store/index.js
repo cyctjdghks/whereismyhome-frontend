@@ -3,12 +3,14 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 // module import
 import memberStore from "@/store/modules/memberStore";
+import noticeStore from "@/store/modules/noticeStore";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
     memberStore,
+    noticeStore,
   },
   plugins: [
     createPersistedState({
