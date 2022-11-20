@@ -28,7 +28,10 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 import NoticeListItem from "./item/NoticeListItem.vue";
+
+const noticeStore = "noticeStore";
 
 export default {
   name: "NoticeList",
@@ -57,9 +60,20 @@ export default {
     };
   },
 
-  mounted() {},
+  computed: {
+    ...mapState(noticeStore, ["notices"]),
+  },
 
-  methods: {},
+  created() {
+    this.getNoticesInfo();
+  },
+
+  methods: {
+    ...mapActions(noticeStore, ["getNotices"]),
+    async getNoticesInfo() {
+      await this.getNotices();
+    },
+  },
 };
 </script>
 
