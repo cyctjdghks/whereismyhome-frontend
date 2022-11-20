@@ -1,18 +1,10 @@
 <template>
-  <div>Notice</div>
+  <router-view></router-view>
 </template>
 
 <script>
 export default {
   name: "AppNotice",
-
-  data() {
-    return {};
-  },
-
-  mounted() {},
-
-  methods: {},
 };
 </script>
 
