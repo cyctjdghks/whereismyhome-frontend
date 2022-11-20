@@ -22,24 +22,32 @@
           <router-link to="/notice" class="nav-link">공지사항</router-link>
         </li>
         |
-        <li class="nav-item">
+        <li class="nav-item" v-if="!isLogin">
           <router-link :to="{ name: 'login' }" class="nav-link"
             >로그인</router-link
           >
         </li>
-        <div class="dropdown">
+        <div class="dropdown" v-else>
           <button class="dropbtn">
-            <font-awesome-icon icon="fa-solid fa-circle-user" /> 윤소현 님
+            <font-awesome-icon icon="fa-solid fa-circle-user" />
+            {{ userInfo.userName }}({{ userInfo.userId }}) 님
           </button>
           <div class="dropdown-content">
-            <router-link to="/qna1" class="nav-link">문의하기</router-link>
-            <router-link to="/qna2" class="nav-link">문의내역</router-link>
-            <router-link to="/qna3" class="nav-link">내정보</router-link>
-            <router-link to="/logout" class="nav-link"
-              >로그아웃<font-awesome-icon
+            <router-link to="/qna1" class="nav-link dropdown-item"
+              >문의하기</router-link
+            >
+            <router-link to="/qna2" class="nav-link dropdown-item"
+              >문의내역</router-link
+            >
+            <router-link to="/qna3" class="nav-link dropdown-item"
+              >내정보</router-link
+            >
+            <div class="nav-link dropdown-item" @click="onClickLogout">
+              로그아웃<font-awesome-icon
                 class="logout-icon"
                 icon="fa-solid fa-right-from-bracket"
-            /></router-link>
+              />
+            </div>
           </div>
         </div>
       </ul>
@@ -48,16 +56,25 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
   name: "TheHeader",
 
-  data() {
-    return {};
+  computed: {
+    ...mapState(memberStore, ["isLogin", ["userInfo"]]),
   },
+  methods: {
+    ...mapActions(memberStore, ["userLogout"]),
 
-  mounted() {},
-
-  methods: {},
+    async onClickLogout() {
+      sessionStorage.removeItem("userInfo");
+      await this.userLogout();
+      if (this.$route.path != "/") this.$router.push({ name: "home" });
+    },
+  },
 };
 </script>
 
@@ -118,17 +135,18 @@ export default {
 }
 
 /* Links inside the dropdown */
-.dropdown-content a {
+.dropdown-item {
   padding: 12px 16px;
   display: block;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .logout-icon {
   padding-left: 5px;
 }
 
-.dropdown-content a:hover {
+.dropdown-item:hover {
   background-color: #f1f1f1;
 }
 

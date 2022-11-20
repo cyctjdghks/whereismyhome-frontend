@@ -8,7 +8,7 @@
           <label for="userid">아이디</label>
           <input
             id="userid"
-            v-model="user.userid"
+            v-model="user.userId"
             required
             placeholder="아이디 입력"
             @keyup.enter="confirm"
@@ -19,9 +19,10 @@
           <input
             type="password"
             id="userpwd"
-            v-model="user.userpwd"
+            v-model="user.userPassword"
             required
             placeholder="비밀번호 입력"
+            autocomplete="on"
             @keyup.enter="confirm"
           />
         </div>
@@ -41,36 +42,41 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
   name: "UserLogin",
   data() {
     return {
-      // isLoginError: false,
       user: {
-        userid: null,
-        userpwd: null,
+        userId: null,
+        userPassword: null,
       },
     };
   },
-  // computed: {
-  //   ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
-  // },
-  // methods: {
-  //   ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
-  //   async confirm() {
-  //     await this.userConfirm(this.user);
-  //     let token = sessionStorage.getItem("access-token");
-  //     // console.log("1. confirm() token >> " + token);
-  //     if (this.isLogin) {
-  //       await this.getUserInfo(token);
-  //       // console.log("4. confirm() userInfo :: ", this.userInfo);
-  //       this.$router.push({ name: "main" });
-  //     }
-  //   },
-  //   movePage() {
-  //     this.$router.push({ name: "join" });
-  //   },
-  // },
+  computed: {
+    ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
+  },
+  methods: {
+    ...mapActions(memberStore, ["userLogin"]),
+
+    // 로그인 되면 메인 페이지로 이동
+    async confirm() {
+      await this.userLogin(this.user);
+      if (this.isLogin) {
+        sessionStorage.setItem("userInfo", JSON.stringify(this.userInfo));
+        this.$router.push({ name: "home" });
+      } else {
+        alert(`아이디와 비밀번호를 확인해주세요!`);
+      }
+    },
+    // 회원가입 페이지로 이동
+    movePage() {
+      this.$router.push({ name: "join" });
+    },
+  },
 };
 </script>
 
