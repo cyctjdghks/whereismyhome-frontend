@@ -25,7 +25,7 @@
           <font-awesome-icon icon="fa-solid fa-left-long" /> 목록으로
         </router-link>
         <button class="write-button" @click.prevent="writeNotice">
-          글등록
+          글수정
         </button>
       </div>
     </form>
@@ -47,21 +47,25 @@ export default {
         content: "",
         subject: "",
         userId: "",
+        noticeNo: "",
       },
     };
   },
 
+  created() {
+    this.newNotice = this.notice;
+  },
+
   computed: {
-    ...mapState(noticeStore, ["isWrite"]),
+    ...mapState(noticeStore, ["isWrite", "notice"]),
     ...mapState(memberStore, ["userInfo"]),
   },
 
   methods: {
-    ...mapActions(noticeStore, ["setNotice"]),
+    ...mapActions(noticeStore, ["modifyNotice"]),
     // 공지 추가
     async writeNotice() {
-      this.newNotice.userId = this.userInfo.userId;
-      await this.setNotice(this.newNotice);
+      await this.modifyNotice(this.newNotice);
       if (this.isWrite === false) {
         alert(`공지 추가 실패 T-T`);
       } else {

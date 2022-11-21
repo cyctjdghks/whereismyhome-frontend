@@ -2,6 +2,7 @@ import {
   noticeList,
   noticeView,
   noticeWrite,
+  noticeModify,
   noticeDelete,
   noticeComment,
   noticeCommentWrite,
@@ -53,6 +54,24 @@ const noticeStore = {
         (error) => {
           console.log(error);
           commit("SET_NOTICE", null);
+        }
+      );
+    },
+    async modifyNotice({ commit }, notice) {
+      await noticeModify(
+        notice,
+        ({ data }) => {
+          if (data === "success") {
+            console.log("공지사항 수정 성공: ", data);
+            commit("SET_ISWRITE", true);
+          } else {
+            console.log("공지사항 수정 실패1: ", data);
+            commit("SET_ISWRITE", false);
+          }
+        },
+        (error) => {
+          console.log("공지사항 수정 실패2: ", error);
+          commit("SET_ISWRITE", false);
         }
       );
     },

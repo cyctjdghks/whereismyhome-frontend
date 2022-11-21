@@ -11,7 +11,7 @@ async function noticeWrite(notice, success, fail) {
 }
 
 async function noticeModify(notice, success, fail) {
-  await api.get(`/notice`, notice).then(success).catch(fail);
+  await api.put(`/notice`, notice).then(success).catch(fail);
 }
 
 async function noticeView(no, success, fail) {
