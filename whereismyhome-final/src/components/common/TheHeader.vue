@@ -39,7 +39,7 @@
             <router-link to="/qna2" class="nav-link dropdown-item"
               >문의내역</router-link
             >
-            <router-link to="/qna3" class="nav-link dropdown-item"
+            <router-link to="/mypage" class="nav-link dropdown-item"
               >내정보</router-link
             >
             <div class="nav-link dropdown-item" @click="onClickLogout">

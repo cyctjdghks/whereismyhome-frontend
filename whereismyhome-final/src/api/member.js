@@ -10,4 +10,12 @@ async function login(user, success, fail) {
   await api.post(`/user/login`, JSON.stringify(user)).then(success).catch(fail);
 }
 
-export { join, login };
+async function modifyUser(user, success, fail) {
+  await api.put(`/user`, JSON.stringify(user)).then(success).catch(fail);
+}
+
+async function deleteUser(userId, success, fail) {
+  await api.delete(`/user/${userId}`).then(success).catch(fail);
+}
+
+export { join, login, modifyUser, deleteUser };
