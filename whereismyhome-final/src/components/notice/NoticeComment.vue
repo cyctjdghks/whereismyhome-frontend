@@ -5,9 +5,16 @@
     </h3>
     <notice-comment-item
       v-for="comment in comments"
-      :key="comment.no"
+      :key="comment.noticeCommentNo"
       v-bind="comment"
     ></notice-comment-item>
+    <form class="writeComment">
+      <textarea
+        placeholder="댓글 적어주세요"
+        v-model="newComment.content"
+      ></textarea>
+      <button @click.prevent="writeNewComment">등록</button>
+    </form>
   </div>
 </template>
 
@@ -16,31 +23,28 @@ import NoticeCommentItem from "./item/NoticeCommentItem.vue";
 import { mapActions, mapState } from "vuex";
 
 const noticeStore = "noticeStore";
+const memberStore = "memberStore";
 
 export default {
   name: "NoticeComment",
-
-  data() {
-    return {
-      comments: [
-        {
-          no: 1,
-          content: "",
-        },
-        {
-          no: 2,
-          content: "",
-        },
-      ],
-    };
-  },
 
   components: {
     NoticeCommentItem,
   },
 
+  data() {
+    return {
+      newComment: {
+        noticeNo: "",
+        content: "",
+        userId: "",
+      },
+    };
+  },
+
   computed: {
-    ...mapState(noticeStore, ["notice"]),
+    ...mapState(noticeStore, ["comments", "isWrite", "notice"]),
+    ...mapState(memberStore, ["userInfo"]),
   },
 
   created() {
@@ -48,9 +52,22 @@ export default {
   },
 
   methods: {
-    ...mapActions(noticeStore, ["getComments"]),
+    ...mapActions(noticeStore, ["getComments", "writeComment"]),
+    // 댓글 목록 가져오기
     async getCommentInfo() {
       await this.getComments(this.$route.params.no);
+    },
+    // 댓글 추가
+    async writeNewComment() {
+      this.newComment.noticeNo = this.notice.noticeNo;
+      this.newComment.userId = this.userInfo.userId;
+      await this.writeComment(this.newComment);
+      if (this.isWrite === false) {
+        alert(`댓글 추가 실패 T-T`);
+      } else {
+        this.newComment.content = "";
+        await this.getCommentInfo();
+      }
     },
   },
 };
@@ -59,5 +76,27 @@ export default {
 <style scoped>
 h3 {
   border-bottom: 1px solid #eee;
+}
+.writeComment {
+  display: flex;
+  justify-content: space-around;
+  margin: 40px 0;
+}
+.writeComment textarea {
+  width: 80%;
+  height: 80px;
+  border-radius: 2px;
+}
+
+button {
+  min-width: 80px;
+  height: 80px;
+  padding: 0px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: rgb(50, 108, 249);
+  border: 1px solid rgb(50, 108, 249);
+  border-radius: 5px;
+  color: rgb(255, 255, 255);
 }
 </style>

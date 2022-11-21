@@ -1,13 +1,11 @@
 <template>
   <div class="comment">
     <div class="head">
-      <h4>아이디</h4>
-      <h5>(2022-11-20 23:45:21)</h5>
+      <h4>{{ userId }}</h4>
+      <h5>({{ registerTime }})</h5>
     </div>
     <div class="content">
-      내용내용내용내용내용내용내용내용내용내용내용내용내용내용 <br />
-      내용내용내용내용내용내용내용내용내용내용내용내용내용내용 <br />
-      내용내용내용내용내용내용내용내용내용내용내용내용내용내용 <br />
+      {{ content }}
     </div>
   </div>
 </template>
@@ -17,19 +15,11 @@ export default {
   name: "NoticeCommentItem",
 
   props: {
-    no: Number,
+    noticeCommentNo: Number,
     content: String,
+    userId: String,
+    registerTime: String,
   },
-
-  data() {
-    return {
-      comment: null,
-    };
-  },
-
-  mounted() {},
-
-  methods: {},
 };
 </script>
 

@@ -1,14 +1,11 @@
 <template>
   <div class="container">
     <div class="head">
-      <h1>제목제목</h1>
-      <h2>2022.11.16</h2>
+      <h1>{{ notice.subject }}</h1>
+      <h2>{{ notice.registerTime }}</h2>
     </div>
     <div class="content">
-      내용내용내용내용내용내용내용내용내용 <br />
-      내용내용내용내용내용내용내용내용내용 <br />
-      내용내용내용내용내용내용내용내용내용 <br />
-      내용내용내용내용내용내용내용내용내용 <br />
+      {{ notice.content }}
     </div>
     <div class="moveList">
       <router-link :to="{ name: 'noticeList' }" class="moveList">
@@ -16,10 +13,6 @@
       </router-link>
     </div>
     <notice-comment></notice-comment>
-    <form class="writeComment">
-      <textarea placeholder="댓글 적어주세요" v-model="comment"></textarea>
-      <button @click="regist">등록</button>
-    </form>
   </div>
 </template>
 
@@ -41,6 +34,7 @@ export default {
   },
 
   created() {
+    // id 해당하는 notice 정보, 댓글 정보
     this.getNoticeInfo();
   },
 
@@ -89,28 +83,5 @@ h2 {
   padding: 32px 0 100px 0;
   color: blue;
   width: 100%;
-}
-
-.writeComment {
-  display: flex;
-  justify-content: space-around;
-  margin: 40px 0;
-}
-.writeComment textarea {
-  width: 80%;
-  height: 80px;
-  border-radius: 2px;
-}
-
-button {
-  min-width: 80px;
-  height: 80px;
-  padding: 0px 16px;
-  font-weight: 700;
-  cursor: pointer;
-  background-color: rgb(50, 108, 249);
-  border: 1px solid rgb(50, 108, 249);
-  border-radius: 5px;
-  color: rgb(255, 255, 255);
 }
 </style>
