@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="top">
       <div class="title">
         <h1>공지사항</h1>
@@ -66,6 +66,9 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  padding-bottom: 100px;
+}
 .top {
   width: 100%;
   background: rgb(147, 183, 251);

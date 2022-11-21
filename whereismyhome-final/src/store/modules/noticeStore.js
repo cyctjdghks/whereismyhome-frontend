@@ -6,6 +6,7 @@ import {
   noticeDelete,
   noticeComment,
   noticeCommentWrite,
+  noticeCommentDelete,
 } from "@/api/notice";
 
 const noticeStore = {
@@ -107,7 +108,7 @@ const noticeStore = {
           }
         },
         (error) => {
-          console.log("공지사항 추가 실패2: ", error);
+          console.log("공지사항 삭제 실패2: ", error);
           commit("SET_ISWRITE", false);
         }
       );
@@ -140,6 +141,23 @@ const noticeStore = {
         (error) => {
           console.log("추가 실패2: ", error);
           commit("SET_ISWRITE", false);
+        }
+      );
+    },
+    async deleteComment({ commit }, no) {
+      await noticeCommentDelete(
+        no,
+        ({ data }) => {
+          if (data === "success") {
+            console.log("댓글 삭제 성공: ", data);
+            commit("SET_ISWRITE", true);
+          } else {
+            console.log("댓글 삭제 실패1: ", data);
+            commit("SET_ISWRITE", false);
+          }
+        },
+        (error) => {
+          console.log("댓글 삭제 실패2: ", error);
         }
       );
     },
