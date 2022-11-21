@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="this.notice">
     <div class="head">
       <h1>{{ notice.subject }}</h1>
       <h2>{{ notice.registerTime }}</h2>
@@ -8,9 +8,19 @@
       {{ notice.content }}
     </div>
     <div class="moveList">
-      <router-link :to="{ name: 'noticeList' }" class="moveList">
-        <font-awesome-icon icon="fa-solid fa-left-long" /> 목록으로
-      </router-link>
+      <div>
+        <router-link :to="{ name: 'noticeList' }" class="moveList">
+          <font-awesome-icon icon="fa-solid fa-left-long" /> 목록으로
+        </router-link>
+      </div>
+      <div class="move-buttons" v-if="this.checkAdmin()">
+        <button class="modify-button" @click.prevent="moveModify">
+          글수정
+        </button>
+        <button class="delete-button" @click.prevent="deleteNoticeEvent">
+          글삭제
+        </button>
+      </div>
     </div>
     <notice-comment></notice-comment>
   </div>
@@ -18,9 +28,10 @@
 
 <script>
 import NoticeComment from "@/components/notice/NoticeComment.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 const noticeStore = "noticeStore";
+const memberStore = "memberStore";
 
 export default {
   name: "NoticeView",
@@ -30,7 +41,7 @@ export default {
   },
 
   computed: {
-    ...mapState(noticeStore, ["notice"]),
+    ...mapState(noticeStore, ["notice", "isWrite"]),
   },
 
   created() {
@@ -39,9 +50,24 @@ export default {
   },
 
   methods: {
-    ...mapActions(noticeStore, ["getNotice"]),
+    ...mapGetters(memberStore, ["checkAdmin"]),
+    ...mapActions(noticeStore, ["getNotice", "deleteNotice"]),
     async getNoticeInfo() {
       await this.getNotice(this.$route.params.no);
+    },
+    // 글 삭제
+    async deleteNoticeEvent() {
+      await this.deleteNotice(this.$route.params.no);
+      if (this.isWrite === false) {
+        alert(`글 삭제 실패 T-T`);
+      } else {
+        alert(`글이 삭제되었습니다.`);
+        this.$router.push({ name: "noticeList" });
+      }
+    },
+    // 글 수정 페이지로
+    async moveModify() {
+      this.$router.push({ name: "noticeModify" });
     },
   },
 };
@@ -80,8 +106,30 @@ h2 {
 }
 
 .moveList {
+  display: flex;
+  justify-content: space-between;
   padding: 32px 0 100px 0;
   color: blue;
   width: 100%;
+}
+
+.move-buttons button {
+  min-width: 70px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 2px;
+  color: rgb(255, 255, 255);
+  height: 40px;
+  margin-top: 32px;
+}
+.delete-button {
+  background-color: rgb(249, 50, 50);
+  border: 1px solid rgb(249, 50, 50);
+}
+
+.modify-button {
+  background-color: rgb(250, 182, 47);
+  border: 1px solid rgb(250, 182, 47);
+  margin-right: 3px;
 }
 </style>

@@ -9,9 +9,9 @@ const memberStore = {
     userInfo: null,
   },
   getters: {
-    // checkUserInfo: function (state) {
-    //   return state.userInfo;
-    // },
+    checkAdmin: function (state) {
+      return state.userInfo.userId === "admin";
+    },
   },
   mutations: {
     SET_IS_JOIN: (state, isJoin) => {

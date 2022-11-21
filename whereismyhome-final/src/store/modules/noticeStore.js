@@ -1,6 +1,9 @@
 import {
   noticeList,
   noticeView,
+  noticeWrite,
+  noticeModify,
+  noticeDelete,
   noticeComment,
   noticeCommentWrite,
 } from "@/api/notice";
@@ -51,6 +54,61 @@ const noticeStore = {
         (error) => {
           console.log(error);
           commit("SET_NOTICE", null);
+        }
+      );
+    },
+    async modifyNotice({ commit }, notice) {
+      await noticeModify(
+        notice,
+        ({ data }) => {
+          if (data === "success") {
+            console.log("공지사항 수정 성공: ", data);
+            commit("SET_ISWRITE", true);
+          } else {
+            console.log("공지사항 수정 실패1: ", data);
+            commit("SET_ISWRITE", false);
+          }
+        },
+        (error) => {
+          console.log("공지사항 수정 실패2: ", error);
+          commit("SET_ISWRITE", false);
+        }
+      );
+    },
+    async setNotice({ commit }, notice) {
+      await noticeWrite(
+        notice,
+        ({ data }) => {
+          if (data === "success") {
+            console.log("공지사항 추가 성공: ", data);
+            commit("SET_ISWRITE", true);
+          } else {
+            console.log("공지사항 추가 실패1: ", data);
+            commit("SET_ISWRITE", false);
+          }
+        },
+        (error) => {
+          console.log("공지사항 추가 실패2: ", error);
+          commit("SET_ISWRITE", false);
+        }
+      );
+    },
+    async deleteNotice({ commit }, no) {
+      await noticeDelete(
+        no,
+        ({ data }) => {
+          if (data === "success") {
+            console.log("공지사항 삭제 성공: ", data);
+            commit("SET_ISWRITE", true);
+            commit("SET_NOTICE", null);
+          } else {
+            console.log("공지사항 삭제 실패1: ", data);
+            commit("SET_ISWRITE", false);
+          }
+        },
+        (error) => {
+          console.log("공지사항 추가 실패2: ", error);
+          commit("SET_ISWRITE", false);
         }
       );
     },
