@@ -3,15 +3,14 @@
     <div class="mypage-head">
       <h1>MY PAGE</h1>
       <ul>
-        <li :class="{ black: isBlack }" @click="updateColor">
-          <router-link :to="{ name: 'myQna' }" :class="{ white: !isWhite }"
-            >1:1 문의내역</router-link
-          >
+        <li @click="updateColor">
+          <router-link :to="{ name: 'question' }">문의하기</router-link>
         </li>
-        <li :class="{ black: !isBlack }" @click="updateColor">
-          <router-link :to="{ name: 'myInfo' }" :class="{ white: isWhite }"
-            >내 정보</router-link
-          >
+        <li @click="updateColor">
+          <router-link :to="{ name: 'myQnaList' }">1:1 문의내역</router-link>
+        </li>
+        <li @click="updateColor">
+          <router-link :to="{ name: 'myInfo' }">내 정보</router-link>
         </li>
       </ul>
     </div>
@@ -25,8 +24,7 @@ export default {
 
   data() {
     return {
-      isBlack: false,
-      isWhite: false,
+      isBlack: [false, false, false],
     };
   },
 
@@ -40,15 +38,20 @@ export default {
 </script>
 
 <style scoped>
+h1 {
+  color: black;
+}
+
 a {
   color: white;
 }
 .mypage-container {
+  width: 100%;
   min-height: 100vh;
 }
 
 .mypage-head {
-  width: 50%;
+  width: 60%;
   margin: auto;
   margin-bottom: 50px;
 }
@@ -69,18 +72,18 @@ a {
 }
 
 .mypage-head li {
-  width: 50%;
+  height: 64px;
+  width: 100%;
   line-height: 64px;
-  border: 1px solid rgb(237, 237, 237);
   cursor: pointer;
 }
-
-.white {
-  background-color: white;
+.mypage-head li a {
+  display: block;
+  border: 1px solid rgb(237, 237, 237);
   color: black;
 }
 
-.black {
+.mypage-head a.router-link-exact-active {
   background-color: black;
   color: white;
 }

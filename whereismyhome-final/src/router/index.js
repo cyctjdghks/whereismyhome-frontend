@@ -16,6 +16,11 @@ const routes = [
     component: () => import("@/views/AppMap.vue"),
   },
   {
+    path: "/like",
+    name: "like",
+    component: () => import("@/views/AppLike.vue"),
+  },
+  {
     path: "/notice",
     name: "notice",
     component: () => import("@/views/AppNotice.vue"),
@@ -73,8 +78,18 @@ const routes = [
       },
       {
         path: "/myQna",
-        name: "myQna",
-        component: () => import("@/components/user/UserQna.vue"),
+        name: "myQnaList",
+        component: () => import("@/components/qna/QnaList.vue"),
+      },
+      {
+        path: "/question",
+        name: "question",
+        component: () => import("@/components/qna/QuestionWrite.vue"),
+      },
+      {
+        path: "/answer",
+        name: "answer",
+        component: () => import("@/components/qna/AnswerWrite.vue"),
       },
     ],
   },

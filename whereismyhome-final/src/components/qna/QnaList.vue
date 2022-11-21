@@ -1,10 +1,10 @@
 <template>
-  <div>Qna</div>
+  <div>qnalist</div>
 </template>
 
 <script>
 export default {
-  name: "WhereismyhomeFinalUserQna",
+  name: "QnaList",
 
   data() {
     return {};
