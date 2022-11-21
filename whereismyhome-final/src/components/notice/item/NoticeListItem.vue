@@ -6,7 +6,7 @@
         {{ subject }}
       </router-link>
     </td>
-    <td>{{ hit }}</td>
+    <td class="td3">{{ hit }}</td>
   </tr>
 </template>
 
@@ -43,5 +43,9 @@ tbody tr:hover {
 
 a {
   color: black;
+}
+
+.td3 {
+  text-align: center;
 }
 </style>

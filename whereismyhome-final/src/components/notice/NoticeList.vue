@@ -6,6 +6,9 @@
         <h2>업데이트 정보 등 다양한 소식을 알려드립니다.</h2>
       </div>
     </div>
+    <div class="write-button-wrapper" v-if="this.checkAdmin()">
+      <button class="write-button" @click="moveWrite">글쓰기</button>
+    </div>
     <div class="list">
       <table>
         <thead>
@@ -28,20 +31,17 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import NoticeListItem from "./item/NoticeListItem.vue";
 
 const noticeStore = "noticeStore";
+const memberStore = "memberStore";
 
 export default {
   name: "NoticeList",
 
   components: {
     NoticeListItem,
-  },
-
-  data() {
-    return {};
   },
 
   computed: {
@@ -53,9 +53,13 @@ export default {
   },
 
   methods: {
+    ...mapGetters(memberStore, ["checkAdmin"]),
     ...mapActions(noticeStore, ["getNotices"]),
     async getNoticesInfo() {
       await this.getNotices();
+    },
+    moveWrite() {
+      this.$router.push({ name: "noticeWrite" });
     },
   },
 };
@@ -91,6 +95,24 @@ h2 {
   text-align: start;
 }
 
+.write-button-wrapper {
+  width: 65%;
+  margin: auto;
+}
+
+.write-button {
+  float: right;
+  margin: 15px 10px 0 0;
+  min-width: 70px;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: rgb(50, 108, 249);
+  border: 1px solid rgb(50, 108, 249);
+  border-radius: 2px;
+  color: rgb(255, 255, 255);
+  height: 40px;
+}
+
 .list {
   width: 65%;
   margin: auto;
@@ -121,5 +143,9 @@ thead th {
 
 .th2 {
   width: 75%;
+}
+
+.th3 {
+  text-align: center;
 }
 </style>

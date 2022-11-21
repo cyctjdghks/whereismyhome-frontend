@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="this.notice">
     <div class="head">
       <h1>{{ notice.subject }}</h1>
       <h2>{{ notice.registerTime }}</h2>
@@ -11,6 +11,13 @@
       <router-link :to="{ name: 'noticeList' }" class="moveList">
         <font-awesome-icon icon="fa-solid fa-left-long" /> 목록으로
       </router-link>
+      <button
+        v-if="this.checkAdmin()"
+        class="delete-button"
+        @click.prevent="deleteNoticeEvent"
+      >
+        글삭제
+      </button>
     </div>
     <notice-comment></notice-comment>
   </div>
@@ -18,9 +25,10 @@
 
 <script>
 import NoticeComment from "@/components/notice/NoticeComment.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 const noticeStore = "noticeStore";
+const memberStore = "memberStore";
 
 export default {
   name: "NoticeView",
@@ -30,7 +38,7 @@ export default {
   },
 
   computed: {
-    ...mapState(noticeStore, ["notice"]),
+    ...mapState(noticeStore, ["notice", "isWrite"]),
   },
 
   created() {
@@ -39,9 +47,20 @@ export default {
   },
 
   methods: {
-    ...mapActions(noticeStore, ["getNotice"]),
+    ...mapGetters(memberStore, ["checkAdmin"]),
+    ...mapActions(noticeStore, ["getNotice", "deleteNotice"]),
     async getNoticeInfo() {
       await this.getNotice(this.$route.params.no);
+    },
+    // 글 삭제
+    async deleteNoticeEvent() {
+      await this.deleteNotice(this.$route.params.no);
+      if (this.isWrite === false) {
+        alert(`글 삭제 실패 T-T`);
+      } else {
+        alert(`글이 삭제되었습니다.`);
+        this.$router.push({ name: "noticeList" });
+      }
     },
   },
 };
@@ -83,5 +102,17 @@ h2 {
   padding: 32px 0 100px 0;
   color: blue;
   width: 100%;
+}
+
+.delete-button {
+  float: right;
+  min-width: 70px;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: rgb(249, 50, 50);
+  border: 1px solid rgb(249, 50, 50);
+  border-radius: 2px;
+  color: rgb(255, 255, 255);
+  height: 40px;
 }
 </style>
