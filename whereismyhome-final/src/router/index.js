@@ -55,6 +55,24 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/mypage",
+    name: "mypage",
+    component: () => import("@/views/AppMypage.vue"),
+    redirect: "/",
+    children: [
+      {
+        path: "/",
+        name: "myInfo",
+        component: () => import("@/components/user/UserInfo.vue"),
+      },
+      {
+        path: "/myQna",
+        name: "myQna",
+        component: () => import("@/components/user/UserQna.vue"),
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({

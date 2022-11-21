@@ -1,4 +1,4 @@
-import { join, login } from "@/api/member";
+import { join, login, modifyUser, deleteUser } from "@/api/member";
 
 const memberStore = {
   namespaced: true,
@@ -65,6 +65,42 @@ const memberStore = {
       console.log("로그아웃!");
       commit("SET_USER_INFO", null);
       commit("SET_IS_LOGIN", false);
+    },
+    async userModify({ commit }, user) {
+      await modifyUser(
+        user,
+        ({ data }) => {
+          if (data === "success") {
+            console.log("수정 성공.. ", data);
+            commit("SET_USER_INFO", user);
+            commit("SET_IS_JOIN", true);
+          } else {
+            commit("SET_IS_JOIN", false);
+            console.log("수정 실패1..", data);
+          }
+        },
+        (error) => {
+          commit("SET_IS_JOIN", false);
+          console.log("수정 실패2..", error);
+        }
+      );
+    },
+    async userDelete({ commit }, userId) {
+      await deleteUser(
+        userId,
+        ({ data }) => {
+          if (data === "success") {
+            console.log("삭제 성공.. ", data);
+            commit("SET_USER_INFO", null);
+            commit("SET_IS_LOGIN", false);
+          } else {
+            console.log("삭제 실패1..", data);
+          }
+        },
+        (error) => {
+          console.log("삭제 실패2..", error);
+        }
+      );
     },
   },
 };
