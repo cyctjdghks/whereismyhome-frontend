@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faComment,
+  faRectangleXmark,
   faHeart as farHeart,
 } from "@fortawesome/free-regular-svg-icons";
 
@@ -20,6 +21,7 @@ library.add(
   faMagnifyingGlass,
   faRightFromBracket,
   faLeftLong,
+  faRectangleXmark,
   faComment,
   fasHeart,
   farHeart

@@ -30,6 +30,10 @@ async function noticeCommentWrite(notice, success, fail) {
   await api.post(`/comment`, notice).then(success).catch(fail);
 }
 
+async function noticeCommentDelete(no, success, fail) {
+  await api.delete(`/comment/${no}`).then(success).catch(fail);
+}
+
 export {
   noticeList,
   noticeWrite,
@@ -38,4 +42,5 @@ export {
   noticeDelete,
   noticeComment,
   noticeCommentWrite,
+  noticeCommentDelete,
 };

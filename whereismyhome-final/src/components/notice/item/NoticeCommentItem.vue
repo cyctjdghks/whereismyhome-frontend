@@ -3,6 +3,9 @@
     <div class="head">
       <h4>{{ userId }}</h4>
       <h5>({{ registerTime }})</h5>
+      <button class="delete-button" v-if="this.isMine()" @click="deleteEvent">
+        <font-awesome-icon icon="fa-regular fa-rectangle-xmark" />
+      </button>
     </div>
     <div class="content">
       {{ content }}
@@ -11,6 +14,11 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
+const memberStore = "memberStore";
+const noticeStore = "noticeStore";
+
 export default {
   name: "NoticeCommentItem",
 
@@ -19,6 +27,26 @@ export default {
     content: String,
     userId: String,
     registerTime: String,
+  },
+
+  computed: {
+    ...mapState(memberStore, ["userInfo"]),
+    ...mapState(noticeStore, ["isWrite"]),
+  },
+
+  methods: {
+    ...mapActions(noticeStore, ["deleteComment", "getComments"]),
+    isMine() {
+      return this.userId === this.userInfo.userId;
+    },
+    async deleteEvent() {
+      await this.deleteComment(this.noticeCommentNo);
+      if (this.isWrite === false) {
+        alert(`댓글 삭제 실패 T-T`);
+      } else {
+        await this.getComments(this.$route.params.no);
+      }
+    },
   },
 };
 </script>
@@ -42,5 +70,12 @@ h5 {
   margin: 0;
   font-size: 10px;
   padding-top: 5px;
+}
+
+.delete-button {
+  margin-left: 5px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 </style>
