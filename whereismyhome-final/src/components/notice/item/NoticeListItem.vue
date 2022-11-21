@@ -1,9 +1,9 @@
 <template>
   <tr>
-    <td>{{ date }}</td>
+    <td>{{ this.registerTime.split(" ")[0] }}</td>
     <td>
-      <router-link :to="{ name: 'noticeView', params: { no: no } }">
-        {{ title }}
+      <router-link :to="{ name: 'noticeView', params: { no: noticeNo } }">
+        {{ subject }}
       </router-link>
     </td>
     <td>{{ hit }}</td>
@@ -15,10 +15,11 @@ export default {
   name: "NoticeListItem",
 
   props: {
-    date: String,
-    title: String,
+    content: String,
     hit: Number,
-    no: Number,
+    noticeNo: Number,
+    registerTime: String,
+    subject: String,
   },
 };
 </script>

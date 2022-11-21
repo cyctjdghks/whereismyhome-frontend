@@ -1,4 +1,9 @@
-import { noticeComment, noticeList, noticeView } from "@/api/notice";
+import {
+  noticeList,
+  noticeView,
+  noticeComment,
+  noticeCommentWrite,
+} from "@/api/notice";
 
 const noticeStore = {
   namespaced: true,
@@ -6,6 +11,7 @@ const noticeStore = {
     notices: [],
     notice: null,
     comments: [],
+    isWrite: false,
   },
   getters: {},
   mutations: {
@@ -17,6 +23,9 @@ const noticeStore = {
     },
     SET_COMMENTS: (state, comments) => {
       state.comments = comments;
+    },
+    SET_ISWRITE: (state, isWrite) => {
+      state.isWrite = isWrite;
     },
   },
   actions: {
@@ -49,12 +58,30 @@ const noticeStore = {
       await noticeComment(
         no,
         ({ data }) => {
-          console.log("공지사항 댓글: ", data);
+          console.log("공지사항 댓글들: ", data);
           commit("SET_COMMENTS", data);
         },
         (error) => {
           console.log(error);
           commit("SET_COMMENTS", null);
+        }
+      );
+    },
+    async writeComment({ commit }, comment) {
+      await noticeCommentWrite(
+        comment,
+        ({ data }) => {
+          if (data === "success") {
+            console.log("댓글 추가 성공: ", data);
+            commit("SET_ISWRITE", true);
+          } else {
+            console.log("추가 실패1: ", data);
+            commit("SET_ISWRITE", false);
+          }
+        },
+        (error) => {
+          console.log("추가 실패2: ", error);
+          commit("SET_ISWRITE", false);
         }
       );
     },

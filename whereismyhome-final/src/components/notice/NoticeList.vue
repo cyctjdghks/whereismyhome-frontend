@@ -18,7 +18,7 @@
         <tbody>
           <notice-list-item
             v-for="notice in notices"
-            :key="notice.no"
+            :key="notice.noticeNo"
             v-bind="notice"
           ></notice-list-item>
         </tbody>
@@ -41,23 +41,7 @@ export default {
   },
 
   data() {
-    return {
-      notices: [
-        {
-          no: 1,
-          date: "2022.12.12",
-          title:
-            "제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목",
-          hit: 12,
-        },
-        {
-          no: 2,
-          date: "2022.12.18",
-          title: "제목제목제목제목",
-          hit: 14,
-        },
-      ],
-    };
+    return {};
   },
 
   computed: {
