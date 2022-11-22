@@ -5,7 +5,9 @@
         <td class="wrapper-search-bar">
           <search-bar class="searchBar"></search-bar>
         </td>
-        <td class="wrapper-search-filter"><search-filter></search-filter></td>
+        <td class="wrapper-search-filter">
+          <search-filter></search-filter>
+        </td>
       </tr>
       <tr class="map-wrapper">
         <td class="wrapper-map-list">
@@ -93,13 +95,5 @@ export default {
 
 .map-wrapper {
   height: 90%;
-}
-
-.wrapper-map-list {
-  background-color: aqua;
-}
-
-.wrapper-map-view {
-  background-color: bisque;
 }
 </style>

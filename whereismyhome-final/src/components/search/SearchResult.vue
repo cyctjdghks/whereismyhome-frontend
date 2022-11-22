@@ -1,73 +1,45 @@
 <template>
   <div class="search-result">
-    <search-result-list title="지역명" :result="dummyArea"></search-result-list>
-    <search-result-list
-      title="아파트"
-      :result="dummyApart"
-    ></search-result-list>
+    <div class="result-container">
+      <h1>지역</h1>
+      <ul>
+        <li v-for="(item, index) in dongCodeList" :key="index">
+          <div class="mainResult">{{ item.siGugunDongName }}</div>
+        </li>
+      </ul>
+    </div>
+    <div class="result-container">
+      <h1>아파트</h1>
+      <ul>
+        <li v-for="(item, index) in apartCodeList" :key="index">
+          <div class="mainResult">{{ item.apartmentName }}</div>
+          <div class="subResult">{{ item.location }}</div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-import SearchResultList from "./SearchResultList.vue";
+import { mapState } from "vuex";
+
+const mapStore = "mapStore";
 
 export default {
   name: "SearchResult",
 
-  props: ["query"],
+  /*
+  dongCode
+  siGugunDongName
 
-  components: {
-    SearchResultList,
+  apartmentName
+  aptCode
+  location
+  */
+
+  computed: {
+    ...mapState(mapStore, ["dongCodeList", "apartCodeList"]),
   },
-
-  data() {
-    return {
-      dummyArea: [
-        {
-          mainResult: "대구광역시 북구 침산동",
-          subResult: null,
-        },
-        {
-          mainResult: "대구광역시 북구 침산동",
-          subResult: null,
-        },
-        {
-          mainResult: "대구광역시 북구 침산동",
-          subResult: null,
-        },
-      ],
-      dummyApart: [
-        {
-          mainResult: "아파트이름1",
-          subResult: "대구광역시 북구 침산동",
-        },
-        {
-          mainResult: "아파트이름2",
-          subResult: "대구광역시 북구 침산동",
-        },
-        {
-          mainResult: "아파트이름3",
-          subResult: "대구광역시 북구 침산동",
-        },
-        {
-          mainResult: "아파트이름1",
-          subResult: "대구광역시 북구 침산동",
-        },
-        {
-          mainResult: "아파트이름2",
-          subResult: "대구광역시 북구 침산동",
-        },
-        {
-          mainResult: "아파트이름3",
-          subResult: "대구광역시 북구 침산동",
-        },
-      ],
-    };
-  },
-
-  mounted() {},
-
-  methods: {},
 };
 </script>
 
@@ -81,5 +53,53 @@ export default {
   border: 1px solid rgb(231, 231, 231);
   border-radius: 3px;
   z-index: 10;
+}
+
+.result-container {
+  width: 50%;
+  height: 392px;
+  border-right: 1px solid #e7e7e7;
+  padding: 30px 50px 30px 60px;
+}
+
+h1 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+ul {
+  height: 250px;
+  overflow: auto;
+}
+
+li {
+  margin-bottom: 15px;
+  text-align: start;
+}
+
+.mainResult {
+  font-size: 16px;
+  color: #656565;
+}
+
+.subResult {
+  font-size: 15px;
+  color: #868686;
+}
+
+ul::-webkit-scrollbar {
+  width: 8px; /* 스크롤바의 너비 */
+}
+
+ul::-webkit-scrollbar-thumb {
+  height: 30%; /* 스크롤바의 길이 */
+  background: #81b3f8; /* 스크롤바의 색상 */
+
+  border-radius: 10px;
+}
+
+ul::-webkit-scrollbar-track {
+  background: rgba(33, 122, 244, 0.1); /*스크롤바 뒷 배경 색상*/
 }
 </style>

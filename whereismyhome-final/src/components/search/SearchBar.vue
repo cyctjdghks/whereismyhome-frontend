@@ -11,6 +11,7 @@
         v-model="query"
         @focus="focus"
         @blur="blur"
+        @input="onChange($event)"
       />
     </div>
     <search-result v-show="this.showResult" :query="query"></search-result>
@@ -18,7 +19,10 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapMutations } from "vuex";
 import SearchResult from "./SearchResult.vue";
+
+const mapStore = "mapStore";
 
 export default {
   name: "SearchBar",
@@ -30,13 +34,20 @@ export default {
   data() {
     return {
       showResult: false,
-      query: "",
+      query: null,
     };
   },
+
+  computed: {
+    ...mapState(mapStore, ["searchQuery", "searchOption"]),
+  },
+
   methods: {
+    ...mapMutations(mapStore, ["SET_SEARCH_QUERY"]),
+    ...mapActions(mapStore, ["getDongCodeByQuery", "getApartCodeByQuery"]),
     // query null 일 때, 검색 결과 창 숨김
     isQueryNull() {
-      this.showResult = this.query !== "" ? true : false;
+      this.showResult = this.query !== null ? true : false;
     },
     // input focus 벗어났을 때, 검색 결과 창 숨김
     focus() {
@@ -45,10 +56,18 @@ export default {
     blur() {
       this.showResult = false;
     },
+    // 쿼리 -> 검색
+    async onChange(event) {
+      // 쿼리 업데이트
+      this.SET_SEARCH_QUERY(event.target.value);
+      // 쿼리 해당 동, 아파트 검색
+      await this.getDongCodeByQuery(this.searchQuery);
+      await this.getApartCodeByQuery(this.searchQuery);
+    },
   },
 
   watch: {
-    query: "isQueryNull",
+    query: ["isQueryNull"],
   },
 };
 </script>
