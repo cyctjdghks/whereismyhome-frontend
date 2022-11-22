@@ -36,7 +36,7 @@
 import { mapState, mapActions } from "vuex";
 
 const memberStore = "memberStore";
-const noticeStore = "noticeStore";
+const qnaStore = "qnaStore";
 
 export default {
   name: "QuestionWrite",
@@ -52,22 +52,22 @@ export default {
   },
 
   computed: {
-    ...mapState(noticeStore, ["isWrite"]),
+    ...mapState(qnaStore, ["isWrite"]),
     ...mapState(memberStore, ["userInfo"]),
   },
 
   methods: {
-    ...mapActions(noticeStore, ["setNotice"]),
-    // 공지 추가
+    ...mapActions(qnaStore, ["setQna"]),
+    // 문의사항 추가
     async writeQuestion() {
-      console.log(`질문 등록`);
-      // this.newNotice.userId = this.userInfo.userId;
-      // await this.setNotice(this.newNotice);
-      // if (this.isWrite === false) {
-      //   alert(`공지 추가 실패 T-T`);
-      // } else {
-      //   this.$router.push({ name: "noticeList" });
-      // }
+      this.qna.userId = this.userInfo.userId;
+      await this.setQna(this.qna);
+      if (this.isWrite == false) {
+        alert(`문의 추가 실패 T-T`);
+      } else {
+        alert(`문의 작성이 성공하였습니다.`);
+        this.$router.push({ name: "myQnaList" });
+      }
     },
   },
 };

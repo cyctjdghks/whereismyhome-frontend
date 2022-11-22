@@ -25,12 +25,16 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
+const qnaStore = "qnaStore";
+
 export default {
   name: "QnaListItem",
 
   props: {
     registerTime: String,
-    questionNo: String,
+    questionNo: Number,
     userId: String,
     subject: String,
     content: String,
@@ -43,15 +47,28 @@ export default {
     };
   },
 
+  computed: {
+    ...mapState(qnaStore, ["isWrite"]),
+  },
+
   methods: {
+    ...mapActions(qnaStore, ["deleteQna"]),
+
     toggle() {
       this.isActive = !this.isActive;
     },
     modifyQuestion() {
       console.log("수정해야해");
+      // this.$router.push({name : ""});
     },
-    deleteQuestion() {
-      console.log("삭제해야해");
+    async deleteQuestion() {
+      await this.deleteQna(this.questionNo);
+      if (this.isWrite === false) {
+        alert(`글 삭제 실패 T-T`);
+      } else {
+        alert(`글이 삭제되었습니다.`);
+        this.$parent.getQnaInfo();
+      }
     },
   },
 };

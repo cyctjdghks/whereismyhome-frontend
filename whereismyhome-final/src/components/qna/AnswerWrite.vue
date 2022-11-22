@@ -61,13 +61,13 @@ export default {
     ...mapActions(noticeStore, ["setNotice"]),
     // 공지 추가
     async writeNotice() {
-      this.newNotice.userId = this.userInfo.userId;
-      await this.setNotice(this.newNotice);
-      if (this.isWrite === false) {
-        alert(`공지 추가 실패 T-T`);
-      } else {
-        this.$router.push({ name: "noticeList" });
-      }
+      // this.newNotice.userId = this.userInfo.userId;
+      // await this.setNotice(this.newNotice);
+      // if (this.isWrite === false) {
+      //   alert(`공지 추가 실패 T-T`);
+      // } else {
+      //   this.$router.push({ name: "noticeList" });
+      // }
     },
   },
 };

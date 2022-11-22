@@ -4,6 +4,7 @@ import createPersistedState from "vuex-persistedstate";
 // module import
 import memberStore from "@/store/modules/memberStore";
 import noticeStore from "@/store/modules/noticeStore";
+import qnaStore from "@/store/modules/qnaStore";
 
 Vue.use(Vuex);
 
@@ -11,6 +12,7 @@ export default new Vuex.Store({
   modules: {
     memberStore,
     noticeStore,
+    qnaStore,
   },
   plugins: [
     createPersistedState({

@@ -3,7 +3,7 @@
     <div class="mypage-head">
       <h1>MY PAGE</h1>
       <ul>
-        <li @click="updateColor">
+        <li @click="updateColor" v-if="!this.checkAdmin()">
           <router-link :to="{ name: 'question' }">문의하기</router-link>
         </li>
         <li @click="updateColor">
@@ -19,6 +19,10 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
+const memberStore = "memberStore";
+
 export default {
   name: "AppMypage",
 
@@ -29,6 +33,7 @@ export default {
   },
 
   methods: {
+    ...mapGetters(memberStore, ["checkAdmin"]),
     updateColor() {
       this.isBlack = !this.isBlack;
       this.isWhite = !this.isWhite;
