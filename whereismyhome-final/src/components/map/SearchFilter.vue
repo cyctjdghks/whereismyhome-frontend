@@ -113,10 +113,10 @@ export default {
         },
       },
       size: {
-        range: [0, 100, 10],
-        value: [0, 100],
+        range: [0, 150, 10],
+        value: [0, 150],
         formatter: function (v) {
-          return `${v}평(${Math.round(v / 3.306, 2)}m²)`;
+          return `${Math.round(v / 3.306, 2)}평(${v}m²)`;
         },
       },
       curYear: 0,

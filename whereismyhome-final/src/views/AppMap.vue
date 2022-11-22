@@ -100,6 +100,11 @@ export default {
   margin-top: 2px;
 }
 
+.wrapper-map-list ul {
+  overflow: auto;
+  height: calc(100vh - 136px);
+}
+
 .map-wrapper {
   height: 90%;
 }

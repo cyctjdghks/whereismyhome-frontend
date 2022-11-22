@@ -11,9 +11,6 @@
         @keyup.enter="onChange($event)"
         @focus="blur(false)"
       />
-      <button class="search-button" @click.prevent="searchApart">
-        검색하기
-      </button>
     </div>
     <search-result v-if="!this.isBlur"></search-result>
   </div>
@@ -78,6 +75,7 @@ export default {
       await this.getDongCodeByQuery(query);
       await this.getApartCodeByQuery(query);
     },
+    async searchDeals() {},
   },
 };
 </script>
@@ -106,17 +104,5 @@ export default {
 
 .search input:focus {
   outline: none;
-}
-
-.search-button {
-  min-width: 70px;
-  font-weight: 700;
-  cursor: pointer;
-  background-color: rgb(50, 108, 249);
-  border: 1px solid rgb(50, 108, 249);
-  border-radius: 2px;
-  color: rgb(255, 255, 255);
-  height: 40px;
-  margin-right: 2%;
 }
 </style>

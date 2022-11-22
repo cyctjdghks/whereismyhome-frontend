@@ -12,7 +12,7 @@ const mapStore = {
       lowDealAmount: 0,
       highDealAmount: 10000000,
       lowArea: 0,
-      highArea: 100,
+      highArea: 150,
       year: 100,
     }, // 검색 조건
     searchQuery: null, // 검색 쿼리
@@ -50,7 +50,6 @@ const mapStore = {
       state.isLastApart = flag;
     },
     SET_ISBLUR: (state, flag) => {
-      console.log("blur", flag);
       state.isBlur = flag;
     },
   },

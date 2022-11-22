@@ -1,16 +1,20 @@
 <template>
   <div>
-    <h3>지역</h3>
     <ul v-if="this.deals !== null">
       <li
-        v-for="(item, index) in this.deals"
+        v-for="(deal, index) in this.deals"
         :key="index"
-        :data-code="item.aptcode"
+        :data-code="deal.aptcode"
         @click="moveApartDetail($event)"
       >
-        <div class="mainResult">{{ item.apartMentName }}</div>
-        <div class="mainResult">{{ item.date }}</div>
-        <div class="mainResult">{{ item.buildYear }}</div>
+        <h1>{{ deal.dealAmount | money }}</h1>
+        <h2>{{ deal.apartMentName }}</h2>
+        <h3>{{ deal.location }}</h3>
+        <h4>
+          {{ deal.floor }}층, {{ Math.round(deal.area / 3.306, 2) }}평({{
+            deal.area
+          }}m²), {{ deal.date }}년 거래, {{ deal.buildYear }} 건설
+        </h4>
       </li>
     </ul>
     <h3 v-else>키워드로 검색해주세요.</h3>
@@ -40,8 +44,22 @@ const mapStore = "mapStore";
 export default {
   name: "MapList",
 
-  data() {
-    return {};
+  filters: {
+    money: function (v) {
+      v = v.replace(",", "");
+      if (v >= 10000) {
+        let s = `${Math.round(v / 10000)}억 `;
+        if (v % 10000 != 0) {
+          s += `${v % 10000}만`;
+        }
+        return s;
+      }
+      return `${v / 1000}천`;
+    },
+  },
+
+  created() {
+    console.log(this.deals);
   },
 
   computed: {
