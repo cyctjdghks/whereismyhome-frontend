@@ -21,7 +21,7 @@
       </div>
       <div class="dropdown">
         <button class="dropbtn select-year-button">
-          건설일자<font-awesome-icon icon="fa-solid fa-chevron-down" />
+          거래일자<font-awesome-icon icon="fa-solid fa-chevron-down" />
         </button>
         <div class="dropdown-content">
           <div class="dropdown-item">
@@ -83,14 +83,13 @@
         </div>
       </div>
     </div>
-    <button class="search-button" @click.prevent="searchApart">검색하기</button>
   </div>
 </template>
 
 <script>
 import "vue-range-component/dist/vue-range-slider.css";
 import VueRangeSlider from "vue-range-component";
-import { mapMutations } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 
 const mapStore = "mapStore";
 
@@ -103,20 +102,14 @@ export default {
 
   data() {
     return {
-      searchOption: {
-        lowDealAmount: 0,
-        highDealAmount: 0,
-        lowArea: 0,
-        highArea: 0,
-        year: 0,
-      },
       price: {
-        range: [0, 1000000000, 10000000],
-        value: [0, 1000000000],
+        range: [0, 50000, 1000],
+        value: [0, 50000],
         formatter: function (v) {
-          return v >= 100000000
-            ? `${v / 100000000}억원`
-            : `${v / 10000000}천만원`;
+          if (v == 50000) {
+            return `무제한`;
+          }
+          return v >= 10000 ? `${v / 10000}억원` : `${v / 1000}천만원`;
         },
       },
       size: {
@@ -136,12 +129,28 @@ export default {
     this.searchOption.year = this.curYear;
   },
 
+  computed: {
+    ...mapState(mapStore, ["isLastApart", "paramCode", "searchOption"]),
+  },
+
   methods: {
+    ...mapActions(mapStore, ["getDealByApartCode", "getDealByDongCode"]),
     ...mapMutations(mapStore, ["SET_SEARCH_OPTION"]),
-    searchApart() {
-      console.log("검색하기");
+    // 버튼으로 검색하기
+    async searchDeal() {
+      if (this.isLastApart) {
+        await this.getDealByApartCode({
+          apartCode: this.paramCode,
+          searchOption: this.searchOption,
+        });
+      } else {
+        await this.getDealByDongCode({
+          dongCode: this.paramCode,
+          searchOption: this.searchOption,
+        });
+      }
     },
-    // 건설일자 업데이트
+    // 거래일자 업데이트
     radioChange(event) {
       var selected = event.target.value;
       this.searchOption.year = selected;
@@ -150,6 +159,7 @@ export default {
     // 모든 검색 조건 업데이트
     updateSearchOption() {
       this.SET_SEARCH_OPTION(this.searchOption);
+      this.searchDeal();
     },
   },
 
@@ -157,7 +167,8 @@ export default {
     // 가격 범위 업데이트
     "price.value": function () {
       this.searchOption.lowDealAmount = this.price.value[0];
-      this.searchOption.highDealAmount = this.price.value[1];
+      this.searchOption.highDealAmount =
+        this.price.value[1] == 50000 ? 10000000 : this.price.value[1];
       this.updateSearchOption();
     },
     // 평수 범위 업데이트
@@ -242,17 +253,5 @@ export default {
 }
 .dropdown-item label {
   display: flex;
-}
-
-.search-button {
-  min-width: 70px;
-  font-weight: 700;
-  cursor: pointer;
-  background-color: rgb(50, 108, 249);
-  border: 1px solid rgb(50, 108, 249);
-  border-radius: 2px;
-  color: rgb(255, 255, 255);
-  height: 40px;
-  margin-right: 2%;
 }
 </style>

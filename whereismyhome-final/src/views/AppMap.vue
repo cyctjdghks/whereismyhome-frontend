@@ -78,9 +78,15 @@ export default {
 .searchBar .search {
   background-color: transparent;
   box-shadow: none;
+  padding: 10px;
 }
 
 .searchBar .search .find-icon {
+  font-size: 20px;
+  padding-top: 8px;
+}
+
+.searchBar .search .x-icon {
   font-size: 20px;
 }
 
@@ -91,9 +97,14 @@ export default {
 
 .searchBar .search-result {
   width: 50%;
+  margin-top: 2px;
 }
 
 .map-wrapper {
   height: 90%;
+}
+
+.map-container .search .search-button {
+  margin: 0;
 }
 </style>

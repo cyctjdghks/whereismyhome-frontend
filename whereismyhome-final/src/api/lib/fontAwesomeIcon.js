@@ -8,6 +8,7 @@ import {
   faRightFromBracket,
   faLeftLong,
   faChevronDown,
+  faX,
   faHeart as fasHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -25,6 +26,7 @@ library.add(
   faRectangleXmark,
   faComment,
   faChevronDown,
+  faX,
   fasHeart,
   farHeart
 );

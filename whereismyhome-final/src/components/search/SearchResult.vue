@@ -2,26 +2,43 @@
   <div class="search-result">
     <div class="result-container">
       <h1>지역</h1>
-      <ul>
-        <li v-for="(item, index) in dongCodeList" :key="index">
+      <ul v-if="dongCodeList !== null">
+        <li
+          v-for="(item, index) in dongCodeList"
+          :key="index"
+          :data-code="item.dongCode"
+          @click="searchByDongCode($event)"
+        >
           <div class="mainResult">{{ item.siGugunDongName }}</div>
         </li>
       </ul>
+      <h4 v-else>검색 결과가 없습니다.</h4>
     </div>
     <div class="result-container">
+      <font-awesome-icon
+        icon="fa-solid fa-x"
+        class="x-icon"
+        @click="blur(true)"
+      />
       <h1>아파트</h1>
-      <ul>
-        <li v-for="(item, index) in apartCodeList" :key="index">
+      <ul v-if="apartCodeList !== null">
+        <li
+          v-for="(item, index) in apartCodeList"
+          :key="index"
+          :data-code="item.aptCode"
+          @click="searchByApartCode($event)"
+        >
           <div class="mainResult">{{ item.apartmentName }}</div>
           <div class="subResult">{{ item.location }}</div>
         </li>
       </ul>
+      <h4 v-else>검색 결과가 없습니다.</h4>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 
 const mapStore = "mapStore";
 
@@ -38,7 +55,49 @@ export default {
   */
 
   computed: {
-    ...mapState(mapStore, ["dongCodeList", "apartCodeList"]),
+    ...mapState(mapStore, ["dongCodeList", "apartCodeList", "searchOption"]),
+  },
+
+  methods: {
+    ...mapMutations(mapStore, [
+      "SET_PARAM_CODE",
+      "SET_ISLAST_APART",
+      "SET_ISBLUR",
+    ]),
+    ...mapActions(mapStore, ["getDealByDongCode", "getDealByApartCode"]),
+
+    blur(flag) {
+      this.SET_ISBLUR(flag);
+    },
+    async searchByDongCode(event) {
+      const dongCode = event.currentTarget.dataset.code;
+      console.log(dongCode);
+      this.SET_PARAM_CODE(dongCode);
+      this.SET_ISLAST_APART(false);
+      this.blur(true);
+      await this.getDealByDongCode({
+        dongCode: dongCode,
+        searchOption: this.searchOption,
+      });
+
+      if (this.$route.path === "/") {
+        this.$router.push({ name: "map" });
+      }
+    },
+    async searchByApartCode(event) {
+      const apartCode = event.currentTarget.dataset.code;
+      console.log(apartCode);
+      this.SET_PARAM_CODE(apartCode);
+      this.SET_ISLAST_APART(true);
+      this.blur(true);
+      await this.getDealByApartCode({
+        apartCode: apartCode,
+        searchOption: this.searchOption,
+      });
+      if (this.$route.path === "/") {
+        this.$router.push({ name: "map" });
+      }
+    },
   },
 };
 </script>
@@ -76,6 +135,7 @@ ul {
 li {
   margin-bottom: 15px;
   text-align: start;
+  cursor: pointer;
 }
 
 .mainResult {
@@ -101,5 +161,15 @@ ul::-webkit-scrollbar-thumb {
 
 ul::-webkit-scrollbar-track {
   background: rgba(33, 122, 244, 0.1); /*스크롤바 뒷 배경 색상*/
+}
+
+.result-container {
+  position: relative;
+}
+.result-container .x-icon {
+  position: absolute;
+  right: 20px;
+  font-size: 25px;
+  cursor: pointer;
 }
 </style>

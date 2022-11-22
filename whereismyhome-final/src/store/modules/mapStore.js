@@ -10,15 +10,19 @@ const mapStore = {
   state: {
     searchOption: {
       lowDealAmount: 0,
-      highDealAmount: 1000000000,
+      highDealAmount: 10000000,
       lowArea: 0,
       highArea: 100,
       year: 100,
     }, // 검색 조건
     searchQuery: null, // 검색 쿼리
+    paramQuery: null, // 진짜 검색할 쿼리
+    paramCode: null, // 진짜 검색할 코드
     deals: null, // 결과 목록에 들어갈 매매 리스트
     dongCodeList: null,
     apartCodeList: null,
+    isLastApart: false, // 마지막 검색이 아파트코드인지 동코드인지
+    isBlur: true, // 쿼리 결과 없앨지
   },
   mutations: {
     SET_DONGCODE_LIST: (state, dongCodes) => {
@@ -35,6 +39,19 @@ const mapStore = {
     },
     SET_SEARCH_OPTION: (state, option) => {
       state.searchOption = option;
+    },
+    SET_PARAM_QUERY: (state, query) => {
+      state.paramQuery = query;
+    },
+    SET_PARAM_CODE: (state, code) => {
+      state.paramCode = code;
+    },
+    SET_ISLAST_APART: (state, flag) => {
+      state.isLastApart = flag;
+    },
+    SET_ISBLUR: (state, flag) => {
+      console.log("blur", flag);
+      state.isBlur = flag;
     },
   },
   actions: {
@@ -72,12 +89,12 @@ const mapStore = {
         }
       );
     },
-    async getDealByApartCode({ commit }, apartCode, searchOption) {
-      await dealByApartCodeApi(
-        apartCode,
+    async getDealByDongCode({ commit }, { dongCode, searchOption }) {
+      await dealByDongCodeApi(
+        dongCode,
         searchOption,
         ({ data }) => {
-          console.log("아파트 코드 기준 거래내역: ", data);
+          console.log("동코드 기준 거래 내역: ", data);
           commit("SET_DEAL_RESULT", data);
         },
         (error) => {
@@ -86,12 +103,12 @@ const mapStore = {
         }
       );
     },
-    async getDealByDongCode({ commit }, dongCode, searchOption) {
-      await dealByDongCodeApi(
-        dongCode,
+    async getDealByApartCode({ commit }, { apartCode, searchOption }) {
+      await dealByApartCodeApi(
+        apartCode,
         searchOption,
         ({ data }) => {
-          console.log("동코드 기준 거래 내역: ", data);
+          console.log("아파트 코드 기준 거래내역: ", data);
           commit("SET_DEAL_RESULT", data);
         },
         (error) => {
