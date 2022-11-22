@@ -84,6 +84,10 @@ export default {
   font-size: 20px;
 }
 
+.searchBar .search .x-icon {
+  font-size: 20px;
+}
+
 .searchBar .search input {
   margin: 0 10px;
   font-size: 17px;

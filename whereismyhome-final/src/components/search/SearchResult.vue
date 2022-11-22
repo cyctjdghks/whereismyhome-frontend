@@ -2,26 +2,38 @@
   <div class="search-result">
     <div class="result-container">
       <h1>지역</h1>
-      <ul>
-        <li v-for="(item, index) in dongCodeList" :key="index">
+      <ul v-if="dongCodeList !== null">
+        <li
+          v-for="(item, index) in dongCodeList"
+          :key="index"
+          :data-code="item.dongCode"
+          @click="searchByDongCode($event)"
+        >
           <div class="mainResult">{{ item.siGugunDongName }}</div>
         </li>
       </ul>
+      <h4 v-else>검색 결과가 없습니다.</h4>
     </div>
     <div class="result-container">
       <h1>아파트</h1>
-      <ul>
-        <li v-for="(item, index) in apartCodeList" :key="index">
+      <ul v-if="apartCodeList !== null">
+        <li
+          v-for="(item, index) in apartCodeList"
+          :key="index"
+          :data-code="item.aptCode"
+          @click="searchByApartCode($event)"
+        >
           <div class="mainResult">{{ item.apartmentName }}</div>
           <div class="subResult">{{ item.location }}</div>
         </li>
       </ul>
+      <h4 v-else>검색 결과가 없습니다.</h4>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 const mapStore = "mapStore";
 
@@ -38,7 +50,25 @@ export default {
   */
 
   computed: {
-    ...mapState(mapStore, ["dongCodeList", "apartCodeList"]),
+    ...mapState(mapStore, ["dongCodeList", "apartCodeList", "searchOption"]),
+  },
+
+  methods: {
+    ...mapActions(mapStore, ["getDealByDongCode", "getDealByApartCode"]),
+    async searchByDongCode(event) {
+      const dongCode = event.currentTarget.dataset.code;
+      await this.getDealByDongCode({
+        dongCode: dongCode,
+        searchOption: this.searchOption,
+      });
+    },
+    async searchByApartCode(event) {
+      const apartCode = event.currentTarget.dataset.code;
+      await this.getDealByApartCode({
+        apartCode: apartCode,
+        searchOption: this.searchOption,
+      });
+    },
   },
 };
 </script>
@@ -76,6 +106,7 @@ ul {
 li {
   margin-bottom: 15px;
   text-align: start;
+  cursor: pointer;
 }
 
 .mainResult {

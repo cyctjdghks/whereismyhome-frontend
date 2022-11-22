@@ -8,13 +8,12 @@
       <input
         type="text"
         placeholder="지역 또는 아파트명을 입력하세요."
-        v-model="query"
-        @focus="focus"
-        @blur="blur"
         @input="onChange($event)"
+        @focus="focus"
       />
+      <font-awesome-icon icon="fa-solid fa-x" class="x-icon" @click="blur" />
     </div>
-    <search-result v-show="this.showResult" :query="query"></search-result>
+    <search-result v-show="this.showResult"></search-result>
   </div>
 </template>
 
@@ -34,7 +33,6 @@ export default {
   data() {
     return {
       showResult: false,
-      query: null,
     };
   },
 
@@ -43,31 +41,43 @@ export default {
   },
 
   methods: {
-    ...mapMutations(mapStore, ["SET_SEARCH_QUERY"]),
+    ...mapMutations(mapStore, [
+      "SET_SEARCH_QUERY",
+      "SET_APARTCODE_LIST",
+      "SET_DONGCODE_LIST",
+      "SET_DEAL_RESULT",
+    ]),
     ...mapActions(mapStore, ["getDongCodeByQuery", "getApartCodeByQuery"]),
-    // query null 일 때, 검색 결과 창 숨김
-    isQueryNull() {
-      this.showResult = this.query !== null ? true : false;
-    },
+
     // input focus 벗어났을 때, 검색 결과 창 숨김
     focus() {
       this.showResult = true;
     },
     blur() {
+      this.query = null;
       this.showResult = false;
     },
-    // 쿼리 -> 검색
-    async onChange(event) {
-      // 쿼리 업데이트
-      this.SET_SEARCH_QUERY(event.target.value);
-      // 쿼리 해당 동, 아파트 검색
-      await this.getDongCodeByQuery(this.searchQuery);
-      await this.getApartCodeByQuery(this.searchQuery);
+    // 쿼리 초기화
+    initQuery() {
+      this.SET_APARTCODE_LIST(null);
+      this.SET_DONGCODE_LIST(null);
+      this.SET_DEAL_RESULT(null);
+      this.SET_SEARCH_QUERY(null);
     },
-  },
 
-  watch: {
-    query: ["isQueryNull"],
+    async onChange(event) {
+      const query = event.currentTarget.value;
+      if (query === ("" || null)) {
+        this.initQuery();
+        blur();
+        return;
+      }
+      // 쿼리 업데이트
+      this.SET_SEARCH_QUERY(query);
+      // 쿼리 해당 동, 아파트 검색
+      await this.getDongCodeByQuery(query);
+      await this.getApartCodeByQuery(query);
+    },
   },
 };
 </script>
@@ -96,5 +106,10 @@ export default {
 
 .search input:focus {
   outline: none;
+}
+
+.search .x-icon {
+  font-size: 25px;
+  cursor: pointer;
 }
 </style>

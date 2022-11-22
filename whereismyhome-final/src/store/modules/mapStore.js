@@ -10,12 +10,13 @@ const mapStore = {
   state: {
     searchOption: {
       lowDealAmount: 0,
-      highDealAmount: 1000000000,
+      highDealAmount: 10000000,
       lowArea: 0,
       highArea: 100,
       year: 100,
     }, // 검색 조건
     searchQuery: null, // 검색 쿼리
+    paramQuery: null, // 진짜 검색할 쿼리
     deals: null, // 결과 목록에 들어갈 매매 리스트
     dongCodeList: null,
     apartCodeList: null,
@@ -35,6 +36,9 @@ const mapStore = {
     },
     SET_SEARCH_OPTION: (state, option) => {
       state.searchOption = option;
+    },
+    SET_PARAM_QUERY: (state, query) => {
+      state.paramQuery = query;
     },
   },
   actions: {
@@ -72,12 +76,12 @@ const mapStore = {
         }
       );
     },
-    async getDealByApartCode({ commit }, apartCode, searchOption) {
-      await dealByApartCodeApi(
-        apartCode,
+    async getDealByDongCode({ commit }, { dongCode, searchOption }) {
+      await dealByDongCodeApi(
+        dongCode,
         searchOption,
         ({ data }) => {
-          console.log("아파트 코드 기준 거래내역: ", data);
+          console.log("동코드 기준 거래 내역: ", data);
           commit("SET_DEAL_RESULT", data);
         },
         (error) => {
@@ -86,12 +90,12 @@ const mapStore = {
         }
       );
     },
-    async getDealByDongCode({ commit }, dongCode, searchOption) {
-      await dealByDongCodeApi(
-        dongCode,
+    async getDealByApartCode({ commit }, { apartCode, searchOption }) {
+      await dealByApartCodeApi(
+        apartCode,
         searchOption,
         ({ data }) => {
-          console.log("동코드 기준 거래 내역: ", data);
+          console.log("아파트 코드 기준 거래내역: ", data);
           commit("SET_DEAL_RESULT", data);
         },
         (error) => {

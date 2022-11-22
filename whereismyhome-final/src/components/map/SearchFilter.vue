@@ -21,7 +21,7 @@
       </div>
       <div class="dropdown">
         <button class="dropbtn select-year-button">
-          건설일자<font-awesome-icon icon="fa-solid fa-chevron-down" />
+          거래일자<font-awesome-icon icon="fa-solid fa-chevron-down" />
         </button>
         <div class="dropdown-content">
           <div class="dropdown-item">
@@ -111,12 +111,13 @@ export default {
         year: 0,
       },
       price: {
-        range: [0, 1000000000, 10000000],
-        value: [0, 1000000000],
+        range: [0, 50000, 1000],
+        value: [0, 50000],
         formatter: function (v) {
-          return v >= 100000000
-            ? `${v / 100000000}억원`
-            : `${v / 10000000}천만원`;
+          if (v == 50000) {
+            return `무제한`;
+          }
+          return v >= 10000 ? `${v / 10000}억원` : `${v / 1000}천만원`;
         },
       },
       size: {
@@ -138,6 +139,7 @@ export default {
 
   methods: {
     ...mapMutations(mapStore, ["SET_SEARCH_OPTION"]),
+    // 버튼으로 검색하기
     searchApart() {
       console.log("검색하기");
     },
@@ -157,7 +159,8 @@ export default {
     // 가격 범위 업데이트
     "price.value": function () {
       this.searchOption.lowDealAmount = this.price.value[0];
-      this.searchOption.highDealAmount = this.price.value[1];
+      this.searchOption.highDealAmount =
+        this.price.value[1] == 50000 ? 10000000 : this.price.value[1];
       this.updateSearchOption();
     },
     // 평수 범위 업데이트
