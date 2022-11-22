@@ -2,7 +2,7 @@
   <header>
     <div class="container">
       <!-- 헤더 왼쪽 -->
-      <router-link to="/" class="navbar-brand">
+      <router-link :to="{ name: 'home' }" class="navbar-brand">
         <img src="@/assets/logo.png" alt="Home logo" style="height: 35px" />
         <img
           src="@/assets/logo-text.png"
@@ -13,13 +13,17 @@
       <!-- 헤더 오른쪽 - 넷바 -->
       <ul class="navbar-nav">
         <li class="nav-item">
-          <router-link to="/map" class="nav-link">지도</router-link>
+          <router-link :to="{ name: 'map' }" class="nav-link">지도</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/like" class="nav-link">관심목록</router-link>
+          <router-link :to="{ name: 'like' }" class="nav-link"
+            >관심목록</router-link
+          >
         </li>
         <li class="nav-item">
-          <router-link to="/notice" class="nav-link">공지사항</router-link>
+          <router-link :to="{ name: 'noticeList' }" class="nav-link"
+            >공지사항</router-link
+          >
         </li>
         |
         <li class="nav-item" v-if="!isLogin">
@@ -33,13 +37,17 @@
             {{ userInfo.userName }}({{ userInfo.userId }}) 님
           </button>
           <div class="dropdown-content">
-            <router-link to="/qna1" class="nav-link dropdown-item"
+            <router-link
+              :to="{ name: 'question' }"
+              class="nav-link dropdown-item"
               >문의하기</router-link
             >
-            <router-link to="/qna2" class="nav-link dropdown-item"
+            <router-link
+              :to="{ name: 'myQnaList' }"
+              class="nav-link dropdown-item"
               >문의내역</router-link
             >
-            <router-link to="/mypage" class="nav-link dropdown-item"
+            <router-link :to="{ name: 'myInfo' }" class="nav-link dropdown-item"
               >내정보</router-link
             >
             <div class="nav-link dropdown-item" @click="onClickLogout">

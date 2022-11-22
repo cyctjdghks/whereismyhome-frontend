@@ -1,10 +1,10 @@
 <template>
-  <div>Qna</div>
+  <div>관심목록</div>
 </template>
 
 <script>
 export default {
-  name: "WhereismyhomeFinalUserQna",
+  name: "AppLike",
 
   data() {
     return {};

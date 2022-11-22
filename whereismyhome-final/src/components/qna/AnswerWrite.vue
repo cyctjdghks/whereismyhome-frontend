@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    답변 쓰기
     <h1>공지사항 글 작성</h1>
     <form>
       <div class="head">
@@ -103,7 +104,7 @@ label {
   font-weight: bold;
 }
 
-#notice-subject {
+#subject {
   height: 28px;
 }
 

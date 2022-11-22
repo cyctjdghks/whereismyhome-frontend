@@ -1,12 +1,15 @@
 <template>
   <div class="container">
-    <h1>공지사항 글 작성</h1>
+    <h2>궁금하신 점을 문의해주세요</h2>
+    <h2>
+      문의내용과 답변은 <span>'1:1 문의내역'</span>에서 확인하실 수 있습니다.
+    </h2>
     <form>
       <div class="head">
         <label for="notice-subject">제목</label>
         <input
           id="notice-subject"
-          v-model="newNotice.subject"
+          v-model="qna.subject"
           placeholder="제목 적어주세요"
           required
         />
@@ -15,16 +18,13 @@
         <label for="notice-content">내용</label>
         <textarea
           id="content"
-          v-model="newNotice.content"
+          v-model="qna.content"
           placeholder="내용 적어주세요"
           required
         ></textarea>
       </div>
       <div class="moveList">
-        <router-link :to="{ name: 'noticeList' }" class="moveList">
-          <font-awesome-icon icon="fa-solid fa-left-long" /> 목록으로
-        </router-link>
-        <button class="write-button" @click.prevent="writeNotice">
+        <button class="write-button" @click.prevent="writeQuestion">
           글등록
         </button>
       </div>
@@ -39,11 +39,11 @@ const memberStore = "memberStore";
 const noticeStore = "noticeStore";
 
 export default {
-  name: "NoticeWrite",
+  name: "QuestionWrite",
 
   data() {
     return {
-      newNotice: {
+      qna: {
         content: "",
         subject: "",
         userId: "",
@@ -59,14 +59,15 @@ export default {
   methods: {
     ...mapActions(noticeStore, ["setNotice"]),
     // 공지 추가
-    async writeNotice() {
-      this.newNotice.userId = this.userInfo.userId;
-      await this.setNotice(this.newNotice);
-      if (this.isWrite === false) {
-        alert(`공지 추가 실패 T-T`);
-      } else {
-        this.$router.push({ name: "noticeList" });
-      }
+    async writeQuestion() {
+      console.log(`질문 등록`);
+      // this.newNotice.userId = this.userInfo.userId;
+      // await this.setNotice(this.newNotice);
+      // if (this.isWrite === false) {
+      //   alert(`공지 추가 실패 T-T`);
+      // } else {
+      //   this.$router.push({ name: "noticeList" });
+      // }
     },
   },
 };
@@ -75,36 +76,46 @@ export default {
 <style scoped>
 .container {
   min-height: 100vh;
-  width: 65%;
+  width: 60%;
   margin: auto;
   text-align: start;
   color: black;
 }
-.container h1 {
-  margin: 80px 0px 30px;
-  font-size: 36px;
-  line-height: 70px;
+.container h2 {
+  text-align: center;
+  font-weight: 300;
+  font-size: 20px;
   letter-spacing: -1px;
-  font-weight: 700;
-  border-bottom: 1px solid #eee;
+}
+.container h2 span {
+  font-weight: 400;
+  color: rgb(50, 108, 249);
 }
 .head {
-  padding-bottom: 32px;
+  padding: 25px 0;
+  border-top: 1px solid #eee;
 }
 
 .head,
 .notice-content {
   display: flex;
-  flex-direction: column;
+  border-bottom: 1px solid #eee;
 }
 
 label {
-  font-size: 20px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 400;
+  width: 8%;
+  text-align: center;
+}
+
+.head label {
+  line-height: 45px;
 }
 
 #notice-subject {
-  height: 28px;
+  height: 45px;
+  width: 100%;
 }
 
 .notice-content {
@@ -113,10 +124,17 @@ label {
 }
 
 #content {
-  min-width: 100%;
-  max-width: 100%;
+  width: 92%;
+  min-width: 92%;
+  max-width: 92%;
   height: 200px;
   min-height: 200px;
+}
+
+#notice-subject,
+#content {
+  border: 1px solid #eee;
+  border-radius: 3px;
 }
 
 .moveList {
