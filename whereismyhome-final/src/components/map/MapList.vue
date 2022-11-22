@@ -13,7 +13,7 @@
         <div class="mainResult">{{ item.buildYear }}</div>
       </li>
     </ul>
-    <h3 v-else>검색 결과가 없습니다.</h3>
+    <h3 v-else>키워드로 검색해주세요.</h3>
   </div>
 </template>
 

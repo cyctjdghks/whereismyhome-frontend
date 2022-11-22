@@ -83,14 +83,13 @@
         </div>
       </div>
     </div>
-    <button class="search-button" @click.prevent="searchApart">검색하기</button>
   </div>
 </template>
 
 <script>
 import "vue-range-component/dist/vue-range-slider.css";
 import VueRangeSlider from "vue-range-component";
-import { mapMutations } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 
 const mapStore = "mapStore";
 
@@ -103,13 +102,6 @@ export default {
 
   data() {
     return {
-      searchOption: {
-        lowDealAmount: 0,
-        highDealAmount: 0,
-        lowArea: 0,
-        highArea: 0,
-        year: 0,
-      },
       price: {
         range: [0, 50000, 1000],
         value: [0, 50000],
@@ -137,13 +129,28 @@ export default {
     this.searchOption.year = this.curYear;
   },
 
+  computed: {
+    ...mapState(mapStore, ["isLastApart", "paramCode", "searchOption"]),
+  },
+
   methods: {
+    ...mapActions(mapStore, ["getDealByApartCode", "getDealByDongCode"]),
     ...mapMutations(mapStore, ["SET_SEARCH_OPTION"]),
     // 버튼으로 검색하기
-    searchApart() {
-      console.log("검색하기");
+    async searchDeal() {
+      if (this.isLastApart) {
+        await this.getDealByApartCode({
+          apartCode: this.paramCode,
+          searchOption: this.searchOption,
+        });
+      } else {
+        await this.getDealByDongCode({
+          dongCode: this.paramCode,
+          searchOption: this.searchOption,
+        });
+      }
     },
-    // 건설일자 업데이트
+    // 거래일자 업데이트
     radioChange(event) {
       var selected = event.target.value;
       this.searchOption.year = selected;
@@ -152,6 +159,7 @@ export default {
     // 모든 검색 조건 업데이트
     updateSearchOption() {
       this.SET_SEARCH_OPTION(this.searchOption);
+      this.searchDeal();
     },
   },
 
@@ -245,17 +253,5 @@ export default {
 }
 .dropdown-item label {
   display: flex;
-}
-
-.search-button {
-  min-width: 70px;
-  font-weight: 700;
-  cursor: pointer;
-  background-color: rgb(50, 108, 249);
-  border: 1px solid rgb(50, 108, 249);
-  border-radius: 2px;
-  color: rgb(255, 255, 255);
-  height: 40px;
-  margin-right: 2%;
 }
 </style>

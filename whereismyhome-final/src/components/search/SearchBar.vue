@@ -7,13 +7,15 @@
       />
       <input
         type="text"
-        placeholder="지역 또는 아파트명을 입력하세요."
-        @input="onChange($event)"
-        @focus="focus"
+        placeholder="지역 또는 아파트명 입력 후 엔터"
+        @keyup.enter="onChange($event)"
+        @focus="blur(false)"
       />
-      <font-awesome-icon icon="fa-solid fa-x" class="x-icon" @click="blur" />
+      <button class="search-button" @click.prevent="searchApart">
+        검색하기
+      </button>
     </div>
-    <search-result v-show="this.showResult"></search-result>
+    <search-result v-if="!this.isBlur"></search-result>
   </div>
 </template>
 
@@ -37,7 +39,7 @@ export default {
   },
 
   computed: {
-    ...mapState(mapStore, ["searchQuery", "searchOption"]),
+    ...mapState(mapStore, ["searchQuery", "searchOption", "isBlur"]),
   },
 
   methods: {
@@ -46,30 +48,28 @@ export default {
       "SET_APARTCODE_LIST",
       "SET_DONGCODE_LIST",
       "SET_DEAL_RESULT",
+      "SET_ISBLUR",
     ]),
     ...mapActions(mapStore, ["getDongCodeByQuery", "getApartCodeByQuery"]),
 
-    // input focus 벗어났을 때, 검색 결과 창 숨김
-    focus() {
-      this.showResult = true;
-    },
-    blur() {
-      this.query = null;
-      this.showResult = false;
+    blur(flag) {
+      this.SET_ISBLUR(flag);
     },
     // 쿼리 초기화
     initQuery() {
+      console.log("init...");
       this.SET_APARTCODE_LIST(null);
       this.SET_DONGCODE_LIST(null);
       this.SET_DEAL_RESULT(null);
       this.SET_SEARCH_QUERY(null);
+      this.SET_ISBLUR(true);
     },
 
     async onChange(event) {
       const query = event.currentTarget.value;
+      console.log(query);
       if (query === ("" || null)) {
         this.initQuery();
-        blur();
         return;
       }
       // 쿼리 업데이트
@@ -108,8 +108,15 @@ export default {
   outline: none;
 }
 
-.search .x-icon {
-  font-size: 25px;
+.search-button {
+  min-width: 70px;
+  font-weight: 700;
   cursor: pointer;
+  background-color: rgb(50, 108, 249);
+  border: 1px solid rgb(50, 108, 249);
+  border-radius: 2px;
+  color: rgb(255, 255, 255);
+  height: 40px;
+  margin-right: 2%;
 }
 </style>

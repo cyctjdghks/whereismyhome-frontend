@@ -17,9 +17,12 @@ const mapStore = {
     }, // 검색 조건
     searchQuery: null, // 검색 쿼리
     paramQuery: null, // 진짜 검색할 쿼리
+    paramCode: null, // 진짜 검색할 코드
     deals: null, // 결과 목록에 들어갈 매매 리스트
     dongCodeList: null,
     apartCodeList: null,
+    isLastApart: false, // 마지막 검색이 아파트코드인지 동코드인지
+    isBlur: true, // 쿼리 결과 없앨지
   },
   mutations: {
     SET_DONGCODE_LIST: (state, dongCodes) => {
@@ -39,6 +42,16 @@ const mapStore = {
     },
     SET_PARAM_QUERY: (state, query) => {
       state.paramQuery = query;
+    },
+    SET_PARAM_CODE: (state, code) => {
+      state.paramCode = code;
+    },
+    SET_ISLAST_APART: (state, flag) => {
+      state.isLastApart = flag;
+    },
+    SET_ISBLUR: (state, flag) => {
+      console.log("blur", flag);
+      state.isBlur = flag;
     },
   },
   actions: {
