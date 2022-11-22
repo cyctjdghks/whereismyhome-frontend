@@ -26,31 +26,57 @@
         <div class="dropdown-content">
           <div class="dropdown-item">
             <label
-              ><input name="buildYear" type="radio" checked="" />
+              ><input
+                name="buildYear"
+                type="radio"
+                checked=""
+                :value="this.curYear"
+                @change="radioChange($event)"
+              />
               <p>전체</p></label
             >
           </div>
           <div class="dropdown-item">
             <label
-              ><input name="buildYear" type="radio" value="1" />
+              ><input
+                name="buildYear"
+                type="radio"
+                value="1"
+                @change="radioChange($event)"
+              />
               <p>1년 이내</p></label
             >
           </div>
           <div class="dropdown-item">
             <label
-              ><input name="buildYear" type="radio" value="5" />
+              ><input
+                name="buildYear"
+                type="radio"
+                value="5"
+                @change="radioChange($event)"
+              />
               <p>5년 이내</p></label
             >
           </div>
           <div class="dropdown-item">
             <label
-              ><input name="buildYear" type="radio" value="10" />
+              ><input
+                name="buildYear"
+                type="radio"
+                value="10"
+                @change="radioChange($event)"
+              />
               <p>10년 이내</p></label
             >
           </div>
           <div class="dropdown-item">
             <label
-              ><input name="buildYear" type="radio" value="15" />
+              ><input
+                name="buildYear"
+                type="radio"
+                value="15"
+                @change="radioChange($event)"
+              />
               <p>15년 이내</p></label
             >
           </div>
@@ -64,6 +90,9 @@
 <script>
 import "vue-range-component/dist/vue-range-slider.css";
 import VueRangeSlider from "vue-range-component";
+import { mapMutations } from "vuex";
+
+const mapStore = "mapStore";
 
 export default {
   name: "SearchFilter",
@@ -74,6 +103,13 @@ export default {
 
   data() {
     return {
+      searchOption: {
+        lowDealAmount: 0,
+        highDealAmount: 0,
+        lowArea: 0,
+        highArea: 0,
+        year: 0,
+      },
       price: {
         range: [0, 1000000000, 10000000],
         value: [0, 1000000000],
@@ -90,12 +126,45 @@ export default {
           return `${v}평(${Math.round(v / 3.306, 2)}m²)`;
         },
       },
+      curYear: 0,
     };
   },
 
+  created() {
+    var now = new Date(); // 현재 날짜 및 시간
+    this.curYear = now.getFullYear(); // 연도
+    this.searchOption.year = this.curYear;
+  },
+
   methods: {
+    ...mapMutations(mapStore, ["SET_SEARCH_OPTION"]),
     searchApart() {
       console.log("검색하기");
+    },
+    // 건설일자 업데이트
+    radioChange(event) {
+      var selected = event.target.value;
+      this.searchOption.year = selected;
+      this.updateSearchOption();
+    },
+    // 모든 검색 조건 업데이트
+    updateSearchOption() {
+      this.SET_SEARCH_OPTION(this.searchOption);
+    },
+  },
+
+  watch: {
+    // 가격 범위 업데이트
+    "price.value": function () {
+      this.searchOption.lowDealAmount = this.price.value[0];
+      this.searchOption.highDealAmount = this.price.value[1];
+      this.updateSearchOption();
+    },
+    // 평수 범위 업데이트
+    "size.value": function () {
+      this.searchOption.lowArea = this.size.value[0];
+      this.searchOption.highArea = this.size.value[1];
+      this.updateSearchOption();
     },
   },
 };
