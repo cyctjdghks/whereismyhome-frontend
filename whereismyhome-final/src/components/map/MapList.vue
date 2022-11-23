@@ -10,8 +10,14 @@
     <ul v-if="this.deals.length !== 0">
       <li v-for="(deal, index) in this.deals" :key="index" class="deal-list">
         <h1>{{ deal.dealAmount | money }}</h1>
-        <h2 :data-code="deal.aptcode" @click="moveApartDetail($event)">
+        <h2
+          :data-code="deal.aptcode"
+          :data-lat="deal.lat"
+          :data-lng="deal.lng"
+          @click="moveApartDetail($event)"
+        >
           {{ deal.apartMentName }}
+          <font-awesome-icon icon="fa-solid fa-location-dot" />
         </h2>
         <h3>{{ deal.location }}</h3>
         <h4>
@@ -45,6 +51,7 @@ location
  -->
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
+import { panTo } from "@/api/lib/kakaomap.js";
 
 const mapStore = "mapStore";
 
@@ -73,10 +80,10 @@ export default {
     ...mapMutations(mapStore, ["SET_ISDETAIL"]),
     ...mapActions(mapStore, ["getDealByApartCode", "getApartDealAmount"]),
     async moveApartDetail(event) {
-      const apartCode = event.currentTarget.dataset.code;
-      console.log("detail apartCode: ", apartCode);
+      const dataset = event.currentTarget.dataset;
+      console.log("detail apartCode: ", dataset.code, dataset.lat, dataset.lng);
       await this.getDealByApartCode({
-        apartCode: apartCode,
+        apartCode: dataset.code,
         searchOption: {
           lowDealAmount: 0,
           highDealAmount: 10000000,
@@ -86,7 +93,8 @@ export default {
         },
         mutation: "SET_APARTDETAIL_LIST",
       });
-      await this.getApartDealAmount(apartCode);
+      panTo(dataset.lat, dataset.lng);
+      await this.getApartDealAmount(dataset.code);
       this.SET_ISDETAIL(true);
     },
   },
@@ -102,7 +110,9 @@ ul {
 }
 .deal-list {
   padding: 10px;
-  margin: 10px 0;
+  margin: 5px;
+  border: 1px solid rgb(167, 164, 164);
+  border-radius: 3px;
 }
 
 h1,
@@ -139,7 +149,11 @@ h4 {
   padding: 10px;
   border-bottom: 1px solid #eee;
 }
+
 .fa-heart {
   color: rgb(72, 138, 236);
+}
+.fa-location-dot {
+  color: rgb(39, 169, 65);
 }
 </style>

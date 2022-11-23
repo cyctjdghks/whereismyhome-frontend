@@ -53,7 +53,7 @@ function initMap() {
 // ////////////////////////////////////// 초기 설정 끝 ///////////////////////////////
 
 // 지도에 마커와 인포윈도우를 표시하는 함수입니다
-function displayMarker(myLatLng, message, markerImage) {
+function displayMarker(myLatLng, deal, markerImage) {
   // 마커를 생성합니다
   var marker = new kakao.maps.Marker({
     map: map,
@@ -61,19 +61,22 @@ function displayMarker(myLatLng, message, markerImage) {
     image: markerImage, // 마커이미지 설정
   });
 
-  if (message) {
+  if (deal) {
     var iwContent = `
-    <li class="list-group-item mb-1">
-        <div class="card" style="min-width: 18rem">
-        <div class="card-body">
-            <h5 class="card-title mb-3">${message.apartMentName}</h5>
-            <h6 class="card-subtitle mb-1">거래금액: ${message.dealAmount}만원</h6>
-            <p class="m-0 text-muted">면적: ${message.area}</p>
-            <p class="m-0 text-muted">층: ${message.date}</p>
-            <p class="card-text">${message.date}</p>
-        </div>
-        </div>
-    </li>
+    <div>
+      <h3>${deal.dealAmount}만</h3>
+      <h4>
+        ${deal.apartMentName}
+      </h4>
+      <h5>${deal.location}</h5>
+      <h5>
+        ${deal.floor}층, ${Math.round(deal.area / 3.306, 2)}평(${
+        deal.area
+      }m²), <br />
+        ${deal.date} 거래, <br/>
+        ${deal.buildYear} 건설
+      </h4>
+    </div>
     `, // 인포윈도우에 표시할 내용
       iwRemoveable = true;
 
@@ -116,9 +119,13 @@ function mapMarker(data) {
   });
 }
 
-// function goCenter(lat, lng) {
-//     var myLatLng = new kakao.maps.LatLng(lng, lat);
-//     map.setCenter(myLatLng);
-// }
+function panTo(lat, lng) {
+  // 이동할 위도 경도 위치를 생성합니다
+  var moveLatLon = new kakao.maps.LatLng(lat, lng);
 
-export { addScript, initMap, mapMarker };
+  // 지도 중심을 부드럽게 이동시킵니다
+  // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+  map.panTo(moveLatLon);
+}
+
+export { addScript, initMap, mapMarker, panTo };

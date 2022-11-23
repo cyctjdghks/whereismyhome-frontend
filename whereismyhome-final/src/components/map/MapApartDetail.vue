@@ -4,7 +4,8 @@
       <map-road-view></map-road-view>
       <h1>{{ this.apartDetailList[0].apartMentName }}</h1>
       <h2>{{ this.apartDetailList[0].location }}</h2>
-      <table v-if="this.apartDetailList.length !== 0">
+      <h3>이 아파트의 거래 기록</h3>
+      <table v-if="this.apartDetailList.length !== 0" class="apartDetails">
         <thead>
           <tr>
             <th>가격</th>
@@ -24,6 +25,7 @@
           </tr>
         </tbody>
       </table>
+      <h3>이 아파트의 연도별 평균 거래가</h3>
       <line-chart></line-chart>
     </div>
     <div class="btn-menu" @click="toggle">
@@ -94,5 +96,26 @@ export default {
   background-color: rgb(171, 170, 170, 0.2);
   z-index: 10;
   cursor: pointer;
+}
+
+.apartDetails {
+  margin-bottom: 20px;
+}
+.apartDetails thead tr {
+  background-color: rgb(171, 170, 170, 0.2);
+}
+
+h1 {
+  margin-bottom: 3px;
+}
+h2 {
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 0;
+}
+
+h3 {
+  margin: 10px 0 1px 2px;
+  text-align: left;
 }
 </style>
