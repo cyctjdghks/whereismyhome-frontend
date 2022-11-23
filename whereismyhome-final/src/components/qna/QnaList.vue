@@ -20,55 +20,34 @@
 </template>
 
 <script>
-// import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import QnaListItem from "./item/QnaListItem.vue";
 
-// const noticeStore = "noticeStore";
-// const memberStore = "memberStore";
+const qnaStore = "qnaStore";
+const memberStore = "memberStore";
 
 export default {
   name: "QnaList",
-
-  data() {
-    return {
-      qnas: [
-        {
-          questionNo: "1",
-          userId: "T",
-          subject: "문의드려요",
-          content: "문의내용~~",
-          answer: "답답답답",
-          registerTime: "2022-11-12 21:16:16",
-        },
-        {
-          questionNo: "2",
-          userId: "T",
-          subject: "문의드려요22",
-          content: "문의내용~~",
-          answer: null,
-          registerTime: "2022-11-13 21:16:16",
-        },
-      ],
-    };
-  },
 
   components: {
     QnaListItem,
   },
 
   computed: {
-    // ...mapState(noticeStore, ["notices"]),
+    ...mapState(qnaStore, ["qnas"]),
+    ...mapState(memberStore, ["userInfo"]),
   },
 
   created() {
-    // this.getNoticesInfo();
+    this.getQnaInfo();
   },
 
   methods: {
-    // ...mapActions(noticeStore, ["getNotices"]),
-    // async getNoticesInfo() {
-    //   await this.getNotices();
-    // },
+    ...mapGetters(memberStore, ["checkAdmin"]),
+    ...mapActions(qnaStore, ["getQnaUser"]),
+    async getQnaInfo() {
+      await this.getQnaUser(this.userInfo.userId);
+    },
   },
 };
 </script>

@@ -38,6 +38,7 @@
           </button>
           <div class="dropdown-content">
             <router-link
+              v-if="!this.checkAdmin()"
               :to="{ name: 'question' }"
               class="nav-link dropdown-item"
               >문의하기</router-link
@@ -64,7 +65,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 
 const memberStore = "memberStore";
 
@@ -76,6 +77,7 @@ export default {
   },
   methods: {
     ...mapActions(memberStore, ["userLogout"]),
+    ...mapGetters(memberStore, ["checkAdmin"]),
 
     async onClickLogout() {
       sessionStorage.removeItem("userInfo");

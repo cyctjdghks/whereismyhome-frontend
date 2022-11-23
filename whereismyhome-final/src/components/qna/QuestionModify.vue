@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2>궁금하신 점을 문의해주세요</h2>
+    <h2>수정할 사항을 작성해주세요</h2>
     <h2>
       문의내용과 답변은 <span>'1:1 문의내역'</span>에서 확인하실 수 있습니다.
     </h2>
@@ -10,7 +10,7 @@
         <input
           id="notice-subject"
           v-model="qna.subject"
-          placeholder="제목 적어주세요"
+          :placeholder="qna.subject"
           required
         />
       </div>
@@ -19,13 +19,16 @@
         <textarea
           id="content"
           v-model="qna.content"
-          placeholder="내용 적어주세요"
+          :placeholder="qna.content"
           required
         ></textarea>
       </div>
       <div class="moveList">
-        <button class="write-button" @click.prevent="writeQuestion">
-          글등록
+        <button class="modify-button" @click.prevent="modifyQuestion">
+          글수정
+        </button>
+        <button class="cancel-button" @click.prevent="cancelQuestion">
+          취소
         </button>
       </div>
     </form>
@@ -39,16 +42,37 @@ const memberStore = "memberStore";
 const qnaStore = "qnaStore";
 
 export default {
-  name: "QuestionWrite",
+  name: "QuestionModify",
 
   data() {
     return {
       qna: {
-        content: "",
-        subject: "",
+        registerTime: "",
+        questionNo: "",
         userId: "",
+        subject: "",
+        content: "",
+        answer: "",
       },
     };
+  },
+
+  props: {
+    registerTime: String,
+    questionNo: Number,
+    userId: String,
+    subject: String,
+    content: String,
+    answer: String,
+  },
+
+  created() {
+    this.qna.registerTime = this.$route.params.registerTime;
+    this.qna.questionNo = this.$route.params.questionNo;
+    this.qna.userId = this.$route.params.userId;
+    this.qna.subject = this.$route.params.subject;
+    this.qna.content = this.$route.params.content;
+    this.qna.answer = this.$route.params.answer;
   },
 
   computed: {
@@ -57,15 +81,19 @@ export default {
   },
 
   methods: {
-    ...mapActions(qnaStore, ["setQna"]),
-    // 문의사항 추가
-    async writeQuestion() {
+    ...mapActions(qnaStore, ["modifyQna"]),
+    // 문의사항 수정 취소
+    async cancelQuestion() {
+      this.$router.push({ name: "myQnaList" });
+    },
+    // 문의사항 수정
+    async modifyQuestion() {
       this.qna.userId = this.userInfo.userId;
-      await this.setQna(this.qna);
+      await this.modifyQna(this.qna);
       if (this.isWrite == false) {
-        alert(`문의 추가 실패 T-T`);
+        alert(`문의 수정 실패 T-T`);
       } else {
-        alert(`문의 작성이 성공하였습니다.`);
+        alert(`문의 수정이 성공하였습니다.`);
         this.$router.push({ name: "myQnaList" });
       }
     },
@@ -143,7 +171,8 @@ label {
   width: 100%;
 }
 
-.write-button {
+.cancel-button,
+.modify-button {
   float: right;
   min-width: 70px;
   font-weight: 700;
@@ -153,5 +182,9 @@ label {
   border-radius: 2px;
   color: rgb(255, 255, 255);
   height: 40px;
+}
+
+.modify-button {
+  margin-left: 5px;
 }
 </style>

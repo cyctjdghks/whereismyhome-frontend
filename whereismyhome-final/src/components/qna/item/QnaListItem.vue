@@ -9,15 +9,34 @@
       <h4>문의내용</h4>
       <div>
         {{ content }}
-        <div class="button-wrapper">
+        <div class="button-wrapper" v-if="!this.checkAdmin()">
           <button @click="modifyQuestion">수정</button> |
           <button @click="deleteQuestion">삭제</button>
         </div>
+        <div class="button-wrapper" v-if="this.checkAdmin()">
+          <button @click="mvwriteAns" v-if="answer == null">답변 등록</button>
+          <button @click="mvmodifyAns" v-if="answer !== null">
+            답변 수정 |&nbsp;
+          </button>
+          <button @click="deleteAns" v-if="answer !== null">답변 삭제</button>
+        </div>
       </div>
-      <div class="answer-wrapper" v-if="answer !== null">
+      <div class="answer-wrapper" v-if="answer !== null && !isInputClick">
         <h4>문의답변</h4>
         <div>
           {{ answer }}
+        </div>
+      </div>
+      <div class="inputanswer" v-if="isInputClick">
+        <textarea
+          id="answertextarea"
+          v-model="qna.answer"
+          :placeholder="qna.answer"
+        ></textarea>
+        <div class="button-wrapper">
+          <button @click="cancelAns">취소</button> |
+          <button @click="writeAns" v-if="answer === null">등록</button>
+          <button @click="modifyAns" v-if="answer !== null">수정</button>
         </div>
       </div>
     </div>
@@ -25,12 +44,17 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from "vuex";
+
+const qnaStore = "qnaStore";
+const memberStore = "memberStore";
+
 export default {
   name: "QnaListItem",
 
   props: {
     registerTime: String,
-    questionNo: String,
+    questionNo: Number,
     userId: String,
     subject: String,
     content: String,
@@ -40,18 +64,102 @@ export default {
   data() {
     return {
       isActive: false,
+      isInputClick: false,
+      qna: {
+        registerTime: "",
+        questionNo: "",
+        userId: "",
+        subject: "",
+        content: "",
+        answer: "",
+      },
     };
+  },
+  created() {
+    this.qna.registerTime = this.registerTime;
+    this.qna.questionNo = this.questionNo;
+    this.qna.userId = this.userId;
+    this.qna.subject = this.subject;
+    this.qna.content = this.content;
+    this.qna.answer = this.answer;
+  },
+
+  computed: {
+    ...mapState(qnaStore, ["isWrite"]),
   },
 
   methods: {
+    ...mapActions(qnaStore, [
+      "deleteQna",
+      "setAnswer",
+      "modifyAnswer",
+      "deleteAnswer",
+    ]),
+    ...mapGetters(memberStore, ["checkAdmin"]),
+
     toggle() {
       this.isActive = !this.isActive;
     },
     modifyQuestion() {
-      console.log("수정해야해");
+      this.$router.push({
+        name: "modifyquestion",
+        params: {
+          registerTime: this.registerTime,
+          questionNo: this.questionNo,
+          userId: this.userId,
+          subject: this.subject,
+          content: this.content,
+          answer: this.answer,
+        },
+      });
     },
-    deleteQuestion() {
-      console.log("삭제해야해");
+    async deleteQuestion() {
+      await this.deleteQna(this.questionNo);
+      if (this.isWrite === false) {
+        alert(`글 삭제 실패 T-T`);
+      } else {
+        alert(`글이 삭제되었습니다.`);
+        this.$parent.getQnaInfo();
+      }
+    },
+    mvwriteAns() {
+      this.isInputClick = true;
+    },
+    mvmodifyAns() {
+      this.isInputClick = true;
+    },
+    async deleteAns() {
+      await this.deleteAnswer(this.questionNo);
+      this.qna.answer = null;
+      if (this.isWrite === false) {
+        alert(`답변 삭제 실패 T-T`);
+      } else {
+        alert(`답변이 삭제되었습니다.`);
+        this.$parent.getQnaInfo();
+      }
+    },
+    cancelAns() {
+      this.isInputClick = false;
+    },
+    async writeAns() {
+      await this.setAnswer(this.qna);
+      if (this.isWrite == false) {
+        alert(`답변 등록 실패 T-T`);
+      } else {
+        alert(`답변 등록이 성공하였습니다.`);
+        this.isInputClick = false;
+        this.$parent.getQnaInfo();
+      }
+    },
+    async modifyAns() {
+      await this.modifyAnswer(this.qna);
+      if (this.isWrite == false) {
+        alert(`답변 수정 실패 T-T`);
+      } else {
+        alert(`답변 수정이 성공하였습니다.`);
+        this.isInputClick = false;
+        this.$parent.getQnaInfo();
+      }
     },
   },
 };
@@ -114,5 +222,15 @@ h4 {
 
 .answer-wrapper {
   margin-top: 20px;
+}
+
+.inputanswer {
+  margin-top: 15px;
+}
+
+#answertextarea {
+  width: 100%;
+  height: 15em;
+  resize: none;
 }
 </style>
