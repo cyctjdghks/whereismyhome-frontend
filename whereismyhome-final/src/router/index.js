@@ -19,6 +19,19 @@ const routes = [
     path: "/like",
     name: "like",
     component: () => import("@/views/AppLike.vue"),
+    redirect: "/like/myDongList",
+    children: [
+      {
+        path: "myDongList",
+        name: "myDongList",
+        component: () => import("@/components/like/LikeAptList.vue"),
+      },
+      {
+        path: "myAptList",
+        name: "myAptList",
+        component: () => import("@/components/like/LikeDongList.vue"),
+      },
+    ],
   },
   {
     path: "/notice",

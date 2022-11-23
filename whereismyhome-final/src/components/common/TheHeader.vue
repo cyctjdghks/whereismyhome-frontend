@@ -113,7 +113,7 @@ export default {
   color: black;
 }
 
-.navbar-nav a.router-link-exact-active {
+.navbar-nav a.router-link-active {
   color: #42b983;
 }
 
