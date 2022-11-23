@@ -28,11 +28,13 @@
         </tr>
       </tbody>
     </table>
+    <line-chart></line-chart>
   </div>
 </template>
 
 <script>
 import MapRoadView from "./MapRoadView.vue";
+import LineChart from "@/components/map/item/LineChart.vue";
 import { mapState, mapMutations } from "vuex";
 
 const mapStore = "mapStore";
@@ -42,6 +44,7 @@ export default {
 
   components: {
     MapRoadView,
+    LineChart,
   },
 
   filters: {
@@ -59,7 +62,7 @@ export default {
   },
 
   computed: {
-    ...mapState(mapStore, ["apartDetailList"]),
+    ...mapState(mapStore, ["apartDetailList", "avgDealAmount"]),
   },
 
   methods: {

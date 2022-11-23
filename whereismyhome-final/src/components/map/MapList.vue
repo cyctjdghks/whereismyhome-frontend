@@ -71,7 +71,7 @@ export default {
 
   methods: {
     ...mapMutations(mapStore, ["SET_ISDETAIL"]),
-    ...mapActions(mapStore, ["getDealByApartCode"]),
+    ...mapActions(mapStore, ["getDealByApartCode", "getApartDealAmount"]),
     async moveApartDetail(event) {
       const apartCode = event.currentTarget.dataset.code;
       console.log("detail apartCode: ", apartCode);
@@ -86,6 +86,7 @@ export default {
         },
         mutation: "SET_APARTDETAIL_LIST",
       });
+      await this.getApartDealAmount(apartCode);
       this.SET_ISDETAIL(true);
     },
   },
