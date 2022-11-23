@@ -1,6 +1,6 @@
 <template>
   <div class="map-container">
-    <table>
+    <table style="position: relative">
       <tr class="search-wrapper">
         <td class="wrapper-search-bar">
           <search-bar class="searchBar"></search-bar>
@@ -8,7 +8,11 @@
         <td class="wrapper-search-filter">
           <search-filter></search-filter>
         </td>
-        <td class="wrapper-apart-list" rowspan="2" v-if="isDetail">
+        <td
+          class="wrapper-apart-list"
+          rowspan="2"
+          :class="{ menuon: isDetail }"
+        >
           <map-apart-detail></map-apart-detail>
         </td>
       </tr>
@@ -129,8 +133,18 @@ export default {
 }
 
 .wrapper-apart-list {
-  width: 30%;
-  min-width: 420px;
-  /* display: none; */
+  z-index: 10;
+  width: 420px;
+  position: absolute;
+  top: 0;
+  right: -420px;
+  height: 100%;
+  background: white;
+  transform: translate(0, 0);
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.wrapper-apart-list.menuon {
+  transform: translate(-420px, 0);
+  box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.3);
 }
 </style>

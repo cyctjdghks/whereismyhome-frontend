@@ -3,6 +3,7 @@ import {
   apartCodeByQueryApi,
   dealByApartCodeApi,
   dealByDongCodeApi,
+  apartDealAmount,
 } from "@/api/map";
 
 const mapStore = {
@@ -25,6 +26,8 @@ const mapStore = {
     isBlur: true, // 쿼리 결과 없앨지
     apartDetailList: null, // 상세 아파트
     isDetail: false, // 아파트 상세 보여줄지
+    avgDealAmount: null, // 아파트 평균 매매가
+    avgDealLabel: null, // 아파트 평균 매매가 연도
   },
   mutations: {
     SET_DONGCODE_LIST: (state, dongCodes) => {
@@ -59,6 +62,26 @@ const mapStore = {
     },
     SET_ISDETAIL: (state, flag) => {
       state.isDetail = flag;
+    },
+    SET_AVG: (state, data) => {
+      // 최신순 정렬
+      data = data.sort((a, b) => {
+        return b.dealYear - a.dealYear;
+      });
+      // 상위 몇개만 자르기
+      let newLabel = [];
+      let newData = [];
+      let sliceCount = Math.min(7, Object.keys(data).length);
+      for (let i = Object.keys(data).length - 1; i >= 0; i--) {
+        if (i > sliceCount - 1) {
+          continue;
+        }
+        newLabel[sliceCount - i - 1] = data[i].dealYear;
+        newData[sliceCount - i - 1] = data[i].avgDealamount;
+      }
+      state.avgDealAmount = newData;
+      state.avgDealLabel = newLabel;
+      console.log("store: ", state.avgDealAmount, state.avgDealLabel);
     },
   },
   actions: {
@@ -132,6 +155,23 @@ const mapStore = {
         (error) => {
           console.log(error);
           commit(mutation, null);
+        }
+      );
+    },
+    async getApartDealAmount({ commit }, aptCode) {
+      await apartDealAmount(
+        aptCode,
+        ({ data }) => {
+          console.log("아파트 평균 매매가: ", data);
+          if (data !== []) {
+            commit("SET_AVG", data);
+          } else {
+            commit("SET_AVG", null);
+          }
+        },
+        (error) => {
+          console.log(error);
+          commit("SET_AVG", null);
         }
       );
     },
