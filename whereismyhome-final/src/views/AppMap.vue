@@ -5,7 +5,9 @@
         <td class="wrapper-search-bar">
           <search-bar class="searchBar"></search-bar>
         </td>
-        <td class="wrapper-search-filter"><search-filter></search-filter></td>
+        <td class="wrapper-search-filter">
+          <search-filter></search-filter>
+        </td>
       </tr>
       <tr class="map-wrapper">
         <td class="wrapper-map-list">
@@ -76,9 +78,15 @@ export default {
 .searchBar .search {
   background-color: transparent;
   box-shadow: none;
+  padding: 10px;
 }
 
 .searchBar .search .find-icon {
+  font-size: 20px;
+  padding-top: 8px;
+}
+
+.searchBar .search .x-icon {
   font-size: 20px;
 }
 
@@ -89,17 +97,14 @@ export default {
 
 .searchBar .search-result {
   width: 50%;
+  margin-top: 2px;
 }
 
 .map-wrapper {
   height: 90%;
 }
 
-.wrapper-map-list {
-  background-color: aqua;
-}
-
-.wrapper-map-view {
-  background-color: bisque;
+.map-container .search .search-button {
+  margin: 0;
 }
 </style>

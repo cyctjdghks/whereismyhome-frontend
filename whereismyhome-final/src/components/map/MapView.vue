@@ -27,4 +27,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+#map {
+  z-index: 0;
+}
+</style>
