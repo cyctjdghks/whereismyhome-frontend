@@ -91,6 +91,11 @@ const routes = [
         name: "answer",
         component: () => import("@/components/qna/AnswerWrite.vue"),
       },
+      {
+        path: "/modifyquestion",
+        name: "modifyquestion",
+        component: () => import("@/components/qna/QuestionModify.vue"),
+      },
     ],
   },
 ];
