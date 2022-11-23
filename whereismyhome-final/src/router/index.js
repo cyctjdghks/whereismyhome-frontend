@@ -14,6 +14,13 @@ const routes = [
     path: "/map",
     name: "map",
     component: () => import("@/views/AppMap.vue"),
+    children: [
+      {
+        path: "mapSearchResult",
+        name: "mapSearchResult",
+        component: () => import("@/components/search/SearchResult.vue"),
+      },
+    ],
   },
   {
     path: "/like",
@@ -24,12 +31,12 @@ const routes = [
       {
         path: "myDongList",
         name: "myDongList",
-        component: () => import("@/components/like/LikeAptList.vue"),
+        component: () => import("@/components/like/LikeDongList.vue"),
       },
       {
         path: "myAptList",
         name: "myAptList",
-        component: () => import("@/components/like/LikeDongList.vue"),
+        component: () => import("@/components/like/LikeAptList.vue"),
       },
     ],
   },
