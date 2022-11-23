@@ -142,6 +142,7 @@ export default {
         await this.getDealByApartCode({
           apartCode: this.paramCode,
           searchOption: this.searchOption,
+          mutation: "SET_DEAL_RESULT",
         });
       } else {
         await this.getDealByDongCode({
@@ -193,7 +194,7 @@ export default {
 }
 
 .slider {
-  width: 30%;
+  width: 300px;
   padding: 0 15px;
 }
 /* Style The Dropdown Button */
@@ -240,6 +241,7 @@ export default {
 }
 
 .select-year-button {
+  min-width: 100px;
   font-weight: 500;
 }
 

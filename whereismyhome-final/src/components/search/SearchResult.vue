@@ -100,6 +100,7 @@ export default {
       await this.getDealByApartCode({
         apartCode: apartCode,
         searchOption: this.searchOption,
+        mutation: "SET_DEAL_RESULT",
       });
       if (this.$route.path === "/") {
         this.$router.push({ name: "map" });

@@ -29,12 +29,6 @@ export default {
     SearchResult,
   },
 
-  data() {
-    return {
-      showResult: false,
-    };
-  },
-
   computed: {
     ...mapState(mapStore, ["searchQuery", "searchOption", "isBlur"]),
   },
@@ -75,7 +69,6 @@ export default {
       await this.getDongCodeByQuery(query);
       await this.getApartCodeByQuery(query);
     },
-    async searchDeals() {},
   },
 };
 </script>

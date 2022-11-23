@@ -40,13 +40,13 @@ function initMap() {
         lon = position.coords.longitude; // 경도
 
       var myLatLng = new kakao.maps.LatLng(lat, lon); // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-      displayMarker(myLatLng, "", markerImage); // 마커와 인포윈도우를 표시합니다
+      // displayMarker(myLatLng, "", markerImage); // 마커와 인포윈도우를 표시합니다
       map.setCenter(myLatLng); // 지도 중심좌표를 접속위치로 변경합니다
     });
   } else {
     // 사용자 위치 없을 때
-    var myLatLng = new kakao.maps.LatLng(37.5012743, 127.039585); // 위치
-    displayMarker(myLatLng, "");
+    // var myLatLng = new kakao.maps.LatLng(37.5012743, 127.039585); // 위치
+    // displayMarker(myLatLng, "");
   }
 }
 

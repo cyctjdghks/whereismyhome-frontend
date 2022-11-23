@@ -23,6 +23,8 @@ const mapStore = {
     apartCodeList: null,
     isLastApart: false, // 마지막 검색이 아파트코드인지 동코드인지
     isBlur: true, // 쿼리 결과 없앨지
+    apartDetailList: null, // 상세 아파트
+    isDetail: false, // 아파트 상세 보여줄지
   },
   mutations: {
     SET_DONGCODE_LIST: (state, dongCodes) => {
@@ -51,6 +53,12 @@ const mapStore = {
     },
     SET_ISBLUR: (state, flag) => {
       state.isBlur = flag;
+    },
+    SET_APARTDETAIL_LIST: (state, aparts) => {
+      state.apartDetailList = aparts;
+    },
+    SET_ISDETAIL: (state, flag) => {
+      state.isDetail = flag;
     },
   },
   actions: {
@@ -94,7 +102,11 @@ const mapStore = {
         searchOption,
         ({ data }) => {
           console.log("동코드 기준 거래 내역: ", data);
-          commit("SET_DEAL_RESULT", data);
+          if (data !== []) {
+            commit("SET_DEAL_RESULT", data);
+          } else {
+            commit("SET_DEAL_RESULT", null);
+          }
         },
         (error) => {
           console.log(error);
@@ -102,17 +114,24 @@ const mapStore = {
         }
       );
     },
-    async getDealByApartCode({ commit }, { apartCode, searchOption }) {
+    async getDealByApartCode(
+      { commit },
+      { apartCode, searchOption, mutation }
+    ) {
       await dealByApartCodeApi(
         apartCode,
         searchOption,
         ({ data }) => {
           console.log("아파트 코드 기준 거래내역: ", data);
-          commit("SET_DEAL_RESULT", data);
+          if (data !== []) {
+            commit(mutation, data);
+          } else {
+            commit(mutation, null);
+          }
         },
         (error) => {
           console.log(error);
-          commit("SET_DEAL_RESULT", null);
+          commit(mutation, null);
         }
       );
     },
