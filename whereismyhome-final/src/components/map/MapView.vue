@@ -10,20 +10,24 @@ import { addScript, initMap } from "@/api/lib/kakaomap.js";
 export default {
   name: "MapView",
 
-  data() {
-    return {
-      map: null,
-      markers: [],
-      latitude: 0,
-      longitude: 0,
-    };
-  },
+  /*
+  apartMentName
+  aptcode
+  area
+  buildYear
+  date
+  dealAmount
+  dongcode
+  floor
+  houseLikeCount
+  lat
+  lng
+  location
+  */
 
   mounted() {
     window.kakao && window.kakao.maps ? initMap() : addScript();
   },
-
-  methods: {},
 };
 </script>
 

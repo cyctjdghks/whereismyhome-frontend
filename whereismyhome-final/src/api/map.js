@@ -24,9 +24,14 @@ async function dealByDongCodeApi(dongCode, searchOption, success, fail) {
     .catch(fail);
 }
 
+async function apartDealAmount(aptCode, success, fail) {
+  await api.get(`/map/avg/${aptCode}`).then(success).catch(fail);
+}
+
 export {
   dongCodeByQueryApi,
   apartCodeByQueryApi,
   dealByApartCodeApi,
   dealByDongCodeApi,
+  apartDealAmount,
 };

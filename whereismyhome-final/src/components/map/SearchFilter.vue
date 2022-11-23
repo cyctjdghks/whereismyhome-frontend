@@ -113,10 +113,10 @@ export default {
         },
       },
       size: {
-        range: [0, 100, 10],
-        value: [0, 100],
+        range: [0, 150, 10],
+        value: [0, 150],
         formatter: function (v) {
-          return `${v}평(${Math.round(v / 3.306, 2)}m²)`;
+          return `${Math.round(v / 3.306, 2)}평(${v}m²)`;
         },
       },
       curYear: 0,
@@ -142,6 +142,7 @@ export default {
         await this.getDealByApartCode({
           apartCode: this.paramCode,
           searchOption: this.searchOption,
+          mutation: "SET_DEAL_RESULT",
         });
       } else {
         await this.getDealByDongCode({
@@ -193,7 +194,7 @@ export default {
 }
 
 .slider {
-  width: 30%;
+  width: 300px;
   padding: 0 15px;
 }
 /* Style The Dropdown Button */
@@ -240,6 +241,7 @@ export default {
 }
 
 .select-year-button {
+  min-width: 100px;
   font-weight: 500;
 }
 

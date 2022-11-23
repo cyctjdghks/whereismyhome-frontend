@@ -1,19 +1,36 @@
 <template>
-  <div>
-    <h3>지역</h3>
-    <ul v-if="this.deals !== null">
-      <li
-        v-for="(item, index) in this.deals"
-        :key="index"
-        :data-code="item.aptcode"
-        @click="moveApartDetail($event)"
-      >
-        <div class="mainResult">{{ item.apartMentName }}</div>
-        <div class="mainResult">{{ item.date }}</div>
-        <div class="mainResult">{{ item.buildYear }}</div>
+  <div class="container">
+    <div v-if="!isLastApart && this.deals != []">
+      <h1 class="like-wrapper">
+        {{ this.deals[0].location }}
+        <font-awesome-icon icon="fa-solid fa-heart" />
+        <font-awesome-icon icon="fa-regular fa-heart" />
+      </h1>
+    </div>
+    <ul v-if="this.deals.length !== 0">
+      <li v-for="(deal, index) in this.deals" :key="index" class="deal-list">
+        <h1>{{ deal.dealAmount | money }}</h1>
+        <h2
+          :data-code="deal.aptcode"
+          :data-lat="deal.lat"
+          :data-lng="deal.lng"
+          @click="moveApartDetail($event)"
+        >
+          {{ deal.apartMentName }}
+          <font-awesome-icon icon="fa-solid fa-location-dot" />
+        </h2>
+        <h3>{{ deal.location }}</h3>
+        <h4>
+          {{ deal.floor }}층, {{ Math.round(deal.area / 3.306, 2) }}평({{
+            deal.area
+          }}m²), <br />
+          {{ deal.date }} 거래, {{ deal.buildYear }} 건설
+        </h4>
       </li>
     </ul>
-    <h3 v-else>키워드로 검색해주세요.</h3>
+    <ul v-else>
+      <div class="div-else">키워드로 검색해주세요.</div>
+    </ul>
   </div>
 </template>
 
@@ -33,31 +50,110 @@ location
 :
  -->
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
+import { panTo } from "@/api/lib/kakaomap.js";
 
 const mapStore = "mapStore";
 
 export default {
   name: "MapList",
 
-  data() {
-    return {};
+  filters: {
+    money: function (v) {
+      v = v.replace(",", "");
+      if (v >= 10000) {
+        let s = `${Math.round(v / 10000)}억 `;
+        if (v % 10000 != 0) {
+          s += `${v % 10000}만`;
+        }
+        return s;
+      }
+      return `${v / 1000}천`;
+    },
   },
 
   computed: {
-    ...mapState(mapStore, ["deals"]),
+    ...mapState(mapStore, ["deals", "isLastApart"]),
   },
+
   methods: {
-    moveApartDetail(event) {
-      const apartCode = event.currentTarget.dataset.code;
-      console.log(apartCode);
-      // await this.getDealByApartCode({
-      //   apartCode: apartCode,
-      //   searchOption: this.searchOption,
-      // });
+    ...mapMutations(mapStore, ["SET_ISDETAIL"]),
+    ...mapActions(mapStore, ["getDealByApartCode", "getApartDealAmount"]),
+    async moveApartDetail(event) {
+      const dataset = event.currentTarget.dataset;
+      console.log("detail apartCode: ", dataset.code, dataset.lat, dataset.lng);
+      await this.getDealByApartCode({
+        apartCode: dataset.code,
+        searchOption: {
+          lowDealAmount: 0,
+          highDealAmount: 10000000,
+          lowArea: 0,
+          highArea: 150,
+          year: 100,
+        },
+        mutation: "SET_APARTDETAIL_LIST",
+      });
+      panTo(dataset.lat, dataset.lng);
+      await this.getApartDealAmount(dataset.code);
+      this.SET_ISDETAIL(true);
     },
   },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.container {
+  width: 100%;
+}
+ul {
+  width: 100%;
+}
+.deal-list {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid rgb(167, 164, 164);
+  border-radius: 3px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-align: start;
+  margin: 0;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+h2 {
+  font-size: 18px;
+  cursor: pointer;
+}
+h3 {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+h4 {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.div-else {
+  text-align: center;
+}
+
+.like-wrapper {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.fa-heart {
+  color: rgb(72, 138, 236);
+}
+.fa-location-dot {
+  color: rgb(39, 169, 65);
+}
+</style>
