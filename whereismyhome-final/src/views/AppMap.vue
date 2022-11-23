@@ -8,6 +8,9 @@
         <td class="wrapper-search-filter">
           <search-filter></search-filter>
         </td>
+        <td class="wrapper-apart-list" rowspan="2" v-if="isDetail">
+          <map-apart-detail></map-apart-detail>
+        </td>
       </tr>
       <tr class="map-wrapper">
         <td class="wrapper-map-list">
@@ -24,6 +27,10 @@ import SearchBar from "@/components/search/SearchBar.vue";
 import SearchFilter from "@/components/map/SearchFilter.vue";
 import MapList from "@/components/map/MapList.vue";
 import MapView from "@/components/map/MapView.vue";
+import MapApartDetail from "@/components/map/MapApartDetail.vue";
+import { mapState } from "vuex";
+
+const mapStore = "mapStore";
 
 export default {
   name: "AppMap",
@@ -33,15 +40,12 @@ export default {
     SearchFilter,
     MapList,
     MapView,
+    MapApartDetail,
   },
 
-  data() {
-    return {};
+  computed: {
+    ...mapState(mapStore, ["isDetail"]),
   },
-
-  mounted() {},
-
-  methods: {},
 };
 </script>
 
@@ -59,6 +63,7 @@ export default {
 
 .map-container td {
   border: 1px solid #eee;
+  /* width: 100%; */
 }
 
 .search-wrapper {
@@ -71,8 +76,9 @@ export default {
 }
 
 .wrapper-search-bar {
-  width: 25%;
-  min-width: 360px;
+  width: 18%;
+  min-width: 280px;
+  padding: 0;
 }
 
 .searchBar .search {
@@ -96,8 +102,22 @@ export default {
 }
 
 .searchBar .search-result {
-  width: 50%;
+  width: 40%;
   margin-top: 2px;
+}
+
+.searchBar .result-container {
+  padding: 15px 25px;
+}
+
+.wrapper-map-list {
+  display: flex;
+}
+
+.wrapper-map-list ul {
+  margin: 0;
+  overflow: auto;
+  height: calc(100vh - 100px);
 }
 
 .map-wrapper {
@@ -106,5 +126,11 @@ export default {
 
 .map-container .search .search-button {
   margin: 0;
+}
+
+.wrapper-apart-list {
+  width: 30%;
+  min-width: 420px;
+  /* display: none; */
 }
 </style>

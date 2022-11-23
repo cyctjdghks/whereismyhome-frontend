@@ -39,6 +39,7 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
+import { mapMarker } from "@/api/lib/kakaomap.js";
 
 const mapStore = "mapStore";
 
@@ -55,7 +56,12 @@ export default {
   */
 
   computed: {
-    ...mapState(mapStore, ["dongCodeList", "apartCodeList", "searchOption"]),
+    ...mapState(mapStore, [
+      "dongCodeList",
+      "apartCodeList",
+      "searchOption",
+      "deals",
+    ]),
   },
 
   methods: {
@@ -83,6 +89,7 @@ export default {
       if (this.$route.path === "/") {
         this.$router.push({ name: "map" });
       }
+      mapMarker(this.deals);
     },
     async searchByApartCode(event) {
       const apartCode = event.currentTarget.dataset.code;
@@ -93,10 +100,12 @@ export default {
       await this.getDealByApartCode({
         apartCode: apartCode,
         searchOption: this.searchOption,
+        mutation: "SET_DEAL_RESULT",
       });
       if (this.$route.path === "/") {
         this.$router.push({ name: "map" });
       }
+      mapMarker(this.deals);
     },
   },
 };
