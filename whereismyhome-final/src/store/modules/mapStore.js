@@ -71,16 +71,17 @@ const mapStore = {
       // 상위 몇개만 자르기
       let newLabel = [];
       let newData = [];
-      let sliceCount = 5;
-      for (let i = 0; i < Object.keys(data).length; i++) {
+      let sliceCount = Math.min(7, Object.keys(data).length);
+      for (let i = Object.keys(data).length - 1; i >= 0; i--) {
         if (i > sliceCount - 1) {
-          break;
+          continue;
         }
-        newLabel[i] = data[i].dealYear;
-        newData[i] = data[i].avgDealamount;
+        newLabel[sliceCount - i - 1] = data[i].dealYear;
+        newData[sliceCount - i - 1] = data[i].avgDealamount;
       }
       state.avgDealAmount = newData;
       state.avgDealLabel = newLabel;
+      console.log("store: ", state.avgDealAmount, state.avgDealLabel);
     },
   },
   actions: {

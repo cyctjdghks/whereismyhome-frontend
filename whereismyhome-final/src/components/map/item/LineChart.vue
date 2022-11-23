@@ -14,7 +14,6 @@
 
 <script>
 import { Line as LineChartGenerator } from "vue-chartjs/legacy";
-
 import {
   Chart as ChartJS,
   Title,
@@ -36,6 +35,8 @@ ChartJS.register(
   CategoryScale,
   PointElement
 );
+
+const mapStore = "mapStore";
 
 export default {
   name: "LineChart",
@@ -75,7 +76,7 @@ export default {
   data() {
     return {
       chartData: {
-        labels: this.avgDealLabel,
+        labels: [],
         datasets: [
           {
             label: "연도별 평균 거래가",
@@ -91,16 +92,22 @@ export default {
     };
   },
 
-  computed: {
-    ...mapState("mapStore", ["avgDealAmount", "avgDealLabel"]),
+  created() {
+    this.chartData.datasets[0].data = this.avgDealAmount;
+    this.chartData.labels = this.avgDealLabel;
   },
+
+  computed: {
+    ...mapState(mapStore, ["avgDealAmount", "avgDealLabel"]),
+  },
+
   watch: {
-    // !!!!!!!
-    "this.avgDealAmount": function () {
-      this.data = this.avgDealAmount;
-    },
-    "this.avgDealLabel": function () {
-      this.labels = this.avgDealLabel;
+    avgDealAmount: {
+      handler() {
+        this.chartData.datasets[0].data = this.avgDealAmount;
+        this.chartData.labels = this.avgDealLabel;
+      },
+      deep: true,
     },
   },
 };

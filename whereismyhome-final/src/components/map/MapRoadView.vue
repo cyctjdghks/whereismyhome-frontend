@@ -47,7 +47,7 @@ export default {
   },
 
   watch: {
-    "this.apartDetailList": function () {
+    apartDetailList: function () {
       this.initMap();
     },
   },
