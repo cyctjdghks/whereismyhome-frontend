@@ -14,11 +14,31 @@ const routes = [
     path: "/map",
     name: "map",
     component: () => import("@/views/AppMap.vue"),
+    children: [
+      {
+        path: "mapSearchResult",
+        name: "mapSearchResult",
+        component: () => import("@/components/search/SearchResult.vue"),
+      },
+    ],
   },
   {
     path: "/like",
     name: "like",
     component: () => import("@/views/AppLike.vue"),
+    redirect: "/like/myDongList",
+    children: [
+      {
+        path: "myDongList",
+        name: "myDongList",
+        component: () => import("@/components/like/LikeDongList.vue"),
+      },
+      {
+        path: "myAptList",
+        name: "myAptList",
+        component: () => import("@/components/like/LikeAptList.vue"),
+      },
+    ],
   },
   {
     path: "/notice",
