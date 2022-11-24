@@ -7,17 +7,24 @@
         <search-bar></search-bar>
       </div>
     </section>
-    <section class="center">center</section>
+    <section>
+      <main-notice-list></main-notice-list>
+    </section>
+    <section>
+      <home-news></home-news>
+    </section>
   </div>
 </template>
 
 <script>
 import TheHeader from "@/components/common/TheHeader.vue";
 import SearchBar from "@/components/search/SearchBar.vue";
+import MainNoticeList from "@/components/mainnotice/MainNoticeList.vue";
+import HomeNews from "@/components/homenews/HomeNews.vue";
 
 export default {
   name: "HomeView",
-  components: { TheHeader, SearchBar },
+  components: { TheHeader, SearchBar, MainNoticeList, HomeNews },
   data() {
     return {};
   },
