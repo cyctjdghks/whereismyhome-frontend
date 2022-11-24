@@ -2,7 +2,9 @@
   <tr>
     <td>{{ this.registerTime.split(" ")[0] }}</td>
     <td>
-      {{ subject }}
+      <router-link :to="{ name: 'noticeView', params: { no: this.noticeNo } }">
+        {{ subject }}
+      </router-link>
     </td>
     <td class="td3">{{ hit }}</td>
   </tr>

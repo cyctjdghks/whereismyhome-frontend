@@ -4,14 +4,14 @@
     <table>
       <thead>
         <tr>
-          <th class="th1">작성일</th>
-          <th class="th2">제목</th>
-          <th class="th3">조회수</th>
+          <th class="th1"></th>
+          <th class="th2"></th>
+          <th class="th3"></th>
         </tr>
       </thead>
       <tbody v-for="(notice, index) in notices" :key="notice.noticeNo">
         <main-notice-list-item
-          v-if="index < 3"
+          v-if="index < 10"
           v-bind="notice"
         ></main-notice-list-item>
       </tbody>
@@ -51,13 +51,23 @@ export default {
 
 <style scoped>
 .list {
-  width: 65%;
+  width: 100%;
+  height: 100%;
   margin: auto;
+  background-color: #fff;
+  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 6%);
+}
+
+h2 {
+  text-align: start;
+  padding-left: 3%;
+  margin-bottom: 0;
 }
 
 table {
   margin-top: 50px;
-  width: 100%;
+  width: 95%;
+  margin: auto;
   text-align: start;
   border-collapse: collapse;
   font-size: 16px;
@@ -69,20 +79,14 @@ thead tr {
 }
 
 thead th {
-  text-align: start;
-  padding: 19px 0px 17px 0px;
-  font-weight: 900;
+  padding-bottom: 5px;
 }
 
 .th1 {
-  width: 15%;
+  width: 20%;
 }
 
 .th2 {
-  width: 75%;
-}
-
-.th3 {
-  text-align: center;
+  width: 60%;
 }
 </style>
