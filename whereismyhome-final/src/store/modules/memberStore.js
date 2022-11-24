@@ -10,7 +10,10 @@ const memberStore = {
   },
   getters: {
     checkAdmin: function (state) {
-      return state.userInfo.userId === "admin";
+      if (state.userInfo !== null) {
+        return state.userInfo.userId === "admin";
+      }
+      return false;
     },
   },
   mutations: {

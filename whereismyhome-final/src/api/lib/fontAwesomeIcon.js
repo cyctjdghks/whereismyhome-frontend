@@ -12,6 +12,7 @@ import {
   faChevronRight,
   faChevronLeft,
   faLocationDot,
+  faArrowUpRightFromSquare,
   faHeart as fasHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -33,6 +34,7 @@ library.add(
   faChevronRight,
   faChevronLeft,
   faLocationDot,
+  faArrowUpRightFromSquare,
   fasHeart,
   farHeart
 );

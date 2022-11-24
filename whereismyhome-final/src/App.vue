@@ -2,16 +2,19 @@
   <div id="app">
     <the-header v-if="$route.name !== 'home'"></the-header>
     <router-view :key="$route.fullPath"></router-view>
+    <the-footer v-if="$route.name !== 'map'"></the-footer>
   </div>
 </template>
 
 <script>
 import TheHeader from "@/components/common/TheHeader.vue";
+import TheFooter from "./components/common/TheFooter.vue";
 
 export default {
   name: "App",
   components: {
     TheHeader,
+    TheFooter,
   },
 };
 </script>
@@ -24,6 +27,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   min-height: 100vh;
+  position: relative;
+  width: 100%;
 }
 
 * {

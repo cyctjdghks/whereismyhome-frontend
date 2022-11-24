@@ -1,6 +1,12 @@
 <template>
   <div class="container">
-    <div class="like" v-if="!isLastApart && this.deals != []">
+    <div
+      v-if="
+        !isLastApart &&
+        this.deals !== null &&
+        Object.keys(this.deals).length !== 0
+      "
+    >
       <h1 class="like-wrapper">
         {{ this.deals[0].location }}
       </h1>
@@ -22,7 +28,7 @@
         <font-awesome-icon icon="fa-regular fa-heart" />
       </div>
     </div>
-    <ul v-if="this.deals.length !== 0">
+    <ul v-if="this.deals !== null && Object.keys(this.deals).length !== 0">
       <li v-for="(deal, index) in this.deals" :key="index" class="deal-list">
         <h1>{{ deal.dealAmount | money }}</h1>
         <h2
@@ -44,7 +50,9 @@
       </li>
     </ul>
     <ul v-else>
-      <div class="div-else">키워드로 검색해주세요.</div>
+      <div class="div-else">
+        검색 결과가 없습니다. <br />키워드로 검색해주세요.
+      </div>
     </ul>
   </div>
 </template>
@@ -219,6 +227,7 @@ h4 {
 
 .div-else {
   text-align: center;
+  margin-top: 10px;
 }
 
 .like-wrapper {
