@@ -106,19 +106,6 @@ export default {
       this.$router.push({ name: "map" });
       mapMarker(this.deals);
     },
-    async searchByUserApartCode(apartCode) {
-      console.log("아파트 검색 : " + apartCode);
-      this.SET_PARAM_CODE(apartCode);
-      this.SET_ISLAST_APART(true);
-      this.blur(true);
-      await this.getDealByApartCode({
-        apartCode: apartCode,
-        searchOption: this.searchOption,
-        mutation: "SET_DEAL_RESULT",
-      });
-      this.$router.push({ name: "map" });
-      mapMarker(this.deals);
-    },
     toggle() {
       this.isLike = !this.isLike;
     },

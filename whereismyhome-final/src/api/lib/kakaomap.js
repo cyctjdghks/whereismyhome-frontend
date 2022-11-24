@@ -105,11 +105,10 @@ function mapMarker(data) {
     return;
   }
   // 검색 주소 기준으로 지도 중심 이동
-  geocoder.addressSearch(data[0].location, function (result, status) {
+  geocoder.addressSearch(data[0].location, function (data, status) {
     // 정상적으로 검색이 완료됐으면
     if (status === kakao.maps.services.Status.OK) {
-      var myLatLng = new kakao.maps.LatLng(result[0].y, result[0].x);
-      map.setCenter(myLatLng);
+      panTo(data[0].y, data[0].x);
     }
   });
 

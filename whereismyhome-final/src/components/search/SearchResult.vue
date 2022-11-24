@@ -45,6 +45,8 @@ import { mapActions, mapMutations, mapState } from "vuex";
 import { mapMarker } from "@/api/lib/kakaomap.js";
 
 const mapStore = "mapStore";
+const memberStore = "memberStore";
+const likeStore = "likeStore";
 
 export default {
   name: "SearchResult",
@@ -59,12 +61,16 @@ export default {
   */
 
   computed: {
+    ...mapState(memberStore, ["userInfo"]),
     ...mapState(mapStore, [
       "dongCodeList",
       "apartCodeList",
       "searchOption",
       "deals",
+      "isLastApart",
+      "paramCode",
     ]),
+    ...mapState(likeStore, ["userlikes", "userlike"]),
   },
 
   methods: {
@@ -73,7 +79,9 @@ export default {
       "SET_ISLAST_APART",
       "SET_ISBLUR",
     ]),
+    ...mapMutations(likeStore, ["SET_USERLIKE"]),
     ...mapActions(mapStore, ["getDealByDongCode", "getDealByApartCode"]),
+    ...mapActions(likeStore, ["getUserLikeDong", "getUserLikeApt"]),
 
     blur(flag) {
       this.SET_ISBLUR(flag);
@@ -88,7 +96,7 @@ export default {
         dongCode: dongCode,
         searchOption: this.searchOption,
       });
-
+      this.isResultIsLike();
       if (this.$route.path === "/") {
         this.$router.push({ name: "map" });
       }
@@ -106,10 +114,47 @@ export default {
         searchOption: this.searchOption,
         mutation: "SET_DEAL_RESULT",
       });
+      this.isResultIsLike();
       if (this.$route.path === "/") {
         this.$router.push({ name: "map" });
       }
-      // mapMarker(this.deals);
+      mapMarker(this.deals);
+    },
+    // 검색할 애가 like인지 검사
+    async isResultIsLike() {
+      this.SET_USERLIKE(false);
+      if (this.isLastApart) {
+        await this.getAptInfo();
+        if (this.userlikes != null) {
+          for (let i = 0; i < this.userlikes.length; i++) {
+            console.log(this.userlikes[i].aptcode, this.paramCode);
+            if (this.userlikes[i].aptcode === this.paramCode) {
+              console.log("smae!!apt");
+              this.SET_USERLIKE(true);
+              return;
+            }
+          }
+        }
+      } else {
+        await this.getUserLikeDongList();
+        if (this.userlikes != null) {
+          for (let i = 0; i < this.userlikes.length; i++) {
+            console.log(this.userlikes[i].dongcode, this.paramCode);
+            if (this.userlikes[i].dongcode === this.paramCode) {
+              console.log("smae!!dong");
+              this.SET_USERLIKE(true);
+              return;
+            }
+          }
+        }
+      }
+    },
+
+    async getUserLikeDongList() {
+      await this.getUserLikeDong(this.userInfo.userId);
+    },
+    async getAptInfo() {
+      await this.getUserLikeApt(this.userInfo.userId);
     },
   },
 };
