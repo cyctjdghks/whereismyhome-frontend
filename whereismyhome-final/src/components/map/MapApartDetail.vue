@@ -1,5 +1,11 @@
 <template>
-  <div class="container">
+  <div
+    class="container"
+    v-if="
+      this.apartDetailList !== null &&
+      Object.keys(this.apartDetailList).length !== 0
+    "
+  >
     <div class="wrapper">
       <map-road-view></map-road-view>
       <h1>{{ this.apartDetailList[0].apartMentName }}</h1>

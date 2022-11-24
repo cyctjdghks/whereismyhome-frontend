@@ -58,25 +58,6 @@ export default {
   location
   */
 
-  mounted() {
-    console.log("동 코드 : " + this.$route.params.dongcode);
-    console.log("아파트 코드 : " + this.$route.params.aptcode);
-    if (
-      this.$route.params.dongcode != null ||
-      this.$route.params.dongcode != ""
-    ) {
-      console.log("동 실행");
-      this.searchByUserDongCode(this.$route.params.dongcode);
-    }
-    if (
-      this.$route.params.aptcode != null ||
-      this.$route.params.aptcode != ""
-    ) {
-      console.log("아파트 실행");
-      this.searchByUserApartCode(this.$route.params.aptcode);
-    }
-  },
-
   computed: {
     ...mapState(mapStore, [
       "dongCodeList",
@@ -100,7 +81,6 @@ export default {
     async searchByDongCode(event) {
       const dongCode = event.currentTarget.dataset.code;
       console.log("동 검색 : " + dongCode);
-      console.log("이벤트 : " + event);
       this.SET_PARAM_CODE(dongCode);
       this.SET_ISLAST_APART(false);
       this.blur(true);
@@ -113,25 +93,10 @@ export default {
         this.$router.push({ name: "map" });
       }
       mapMarker(this.deals);
-    },
-    async searchByUserDongCode(dongCode) {
-      console.log("동 검색 : " + dongCode);
-      this.SET_PARAM_CODE(dongCode);
-      this.SET_ISLAST_APART(false);
-      // this.blur(true);
-      await this.getDealByDongCode({
-        dongCode: dongCode,
-        searchOption: this.searchOption,
-      });
-
-      if (this.$route.path === "/") {
-        this.$router.push({ name: "map" });
-      }
     },
     async searchByApartCode(event) {
       const apartCode = event.currentTarget.dataset.code;
       console.log("아파트 검색 : " + apartCode);
-      console.log("이벤트 : " + event);
       this.SET_PARAM_CODE(apartCode);
       this.SET_ISLAST_APART(true);
       this.blur(true);
@@ -142,21 +107,6 @@ export default {
       if (this.$route.path === "/") {
         this.$router.push({ name: "map" });
       }
-    },
-    async searchByUserApartCode(apartCode) {
-      console.log("아파트 검색 : " + apartCode);
-      this.SET_PARAM_CODE(apartCode);
-      this.SET_ISLAST_APART(true);
-      this.blur(true);
-      await this.getDealByApartCode({
-        apartCode: apartCode,
-        searchOption: this.searchOption,
-        mutation: "SET_DEAL_RESULT",
-      });
-      if (this.$route.path === "/") {
-        this.$router.push({ name: "map" });
-      }
-      mapMarker(this.deals);
     },
   },
 };

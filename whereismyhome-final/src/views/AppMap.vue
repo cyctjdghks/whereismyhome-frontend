@@ -107,11 +107,13 @@ export default {
 
 .searchBar .search-result {
   width: 40%;
+  min-width: 560px;
   margin-top: 2px;
 }
 
 .searchBar .result-container {
   padding: 15px 25px;
+  min-width: 280px;
 }
 
 .wrapper-map-list {
