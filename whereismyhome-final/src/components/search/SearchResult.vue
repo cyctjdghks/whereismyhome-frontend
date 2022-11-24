@@ -96,7 +96,9 @@ export default {
         dongCode: dongCode,
         searchOption: this.searchOption,
       });
-      this.isResultIsLike();
+      if (this.userId !== null) {
+        this.isResultIsLike();
+      }
       if (this.$route.path === "/") {
         this.$router.push({ name: "map" });
       }
@@ -114,7 +116,9 @@ export default {
         searchOption: this.searchOption,
         mutation: "SET_DEAL_RESULT",
       });
-      this.isResultIsLike();
+      if (this.userId !== null) {
+        this.isResultIsLike();
+      }
       if (this.$route.path === "/") {
         this.$router.push({ name: "map" });
       }
@@ -127,9 +131,7 @@ export default {
         await this.getAptInfo();
         if (this.userlikes != null) {
           for (let i = 0; i < this.userlikes.length; i++) {
-            console.log(this.userlikes[i].aptcode, this.paramCode);
             if (this.userlikes[i].aptcode === this.paramCode) {
-              console.log("smae!!apt");
               this.SET_USERLIKE(true);
               return;
             }
@@ -139,9 +141,7 @@ export default {
         await this.getUserLikeDongList();
         if (this.userlikes != null) {
           for (let i = 0; i < this.userlikes.length; i++) {
-            console.log(this.userlikes[i].dongcode, this.paramCode);
             if (this.userlikes[i].dongcode === this.paramCode) {
-              console.log("smae!!dong");
               this.SET_USERLIKE(true);
               return;
             }

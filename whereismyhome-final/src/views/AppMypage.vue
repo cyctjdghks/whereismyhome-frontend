@@ -52,7 +52,7 @@ a {
 }
 .mypage-container {
   width: 100%;
-  min-height: 100vh;
+  min-height: 130vh;
 }
 
 .mypage-head {
