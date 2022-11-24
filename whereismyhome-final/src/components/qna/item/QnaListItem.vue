@@ -23,9 +23,7 @@
       </div>
       <div class="answer-wrapper" v-if="answer !== null && !isInputClick">
         <h4>문의답변</h4>
-        <div>
-          {{ answer }}
-        </div>
+        <span v-html="handleNewLine(answer)"></span>
       </div>
       <div class="inputanswer" v-if="isInputClick">
         <textarea
