@@ -20,4 +20,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.container {
+  padding-bottom: 200px;
+}
+</style>
