@@ -7,9 +7,7 @@
         <font-awesome-icon icon="fa-regular fa-rectangle-xmark" />
       </button>
     </div>
-    <div class="content">
-      {{ content }}
-    </div>
+    <div class="content" v-html="handleNewLine(content)"></div>
   </div>
 </template>
 
@@ -46,6 +44,10 @@ export default {
       } else {
         await this.getComments(this.$route.params.no);
       }
+    },
+    // 줄바꿈 처리
+    handleNewLine(str) {
+      return String(str).replace(/(?:\r\n|\r|\n)/g, "</br>");
     },
   },
 };

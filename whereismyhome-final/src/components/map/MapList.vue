@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div
+      class="like"
       v-if="
         !isLastApart &&
         this.deals !== null &&
@@ -17,11 +18,22 @@
         <font-awesome-icon icon="fa-regular fa-heart" />
       </div>
     </div>
-    <div class="like" v-if="isLastApart && this.deals != []">
+    <div
+      class="like"
+      v-if="
+        isLastApart &&
+        this.deals !== null &&
+        Object.keys(this.deals).length !== 0
+      "
+    >
       <h1 class="like-wrapper">
         {{ this.deals[0].apartMentName }}
       </h1>
-      <div @click="deleteLikeApt" class="heart" v-if="userlike">
+      <div
+        @click="deleteLikeApt"
+        class="heart"
+        v-if="userlike && this.userInfo !== null"
+      >
         <font-awesome-icon icon="fa-solid fa-heart" />
       </div>
       <div @click="addLikeApt" lass="heart" v-else>

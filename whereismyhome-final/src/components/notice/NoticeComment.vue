@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h3>
       댓글 <span><font-awesome-icon icon="fa-regular fa-comment" /></span>
     </h3>
@@ -74,6 +74,9 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  min-width: 100%;
+}
 h3 {
   border-bottom: 1px solid #eee;
 }

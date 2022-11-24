@@ -8,7 +8,7 @@
     <div class="answer" v-if="isActive">
       <h4>문의내용</h4>
       <div>
-        {{ content }}
+        <span v-html="handleNewLine(content)"></span>
         <div class="button-wrapper" v-if="!this.checkAdmin()">
           <button @click="modifyQuestion">수정</button> |
           <button @click="deleteQuestion">삭제</button>
@@ -160,6 +160,10 @@ export default {
         this.isInputClick = false;
         this.$parent.getQnaInfo();
       }
+    },
+    // 줄바꿈 처리
+    handleNewLine(str) {
+      return String(str).replace(/(?:\r\n|\r|\n)/g, "</br>");
     },
   },
 };

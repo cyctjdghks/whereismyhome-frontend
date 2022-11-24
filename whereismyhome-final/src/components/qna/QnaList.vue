@@ -56,10 +56,12 @@ export default {
 .list {
   width: 60%;
   margin: auto;
+  margin-bottom: 300px;
 }
 
 ul {
   margin-top: 50px;
+  margin-bottom: 100px;
   width: 100%;
   text-align: start;
   border-collapse: collapse;

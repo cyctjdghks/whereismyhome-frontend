@@ -118,7 +118,7 @@ h2 {
 
 .list {
   width: 65%;
-  margin: auto;
+  margin: 50px auto;
 }
 
 table {

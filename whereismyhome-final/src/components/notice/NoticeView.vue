@@ -4,9 +4,7 @@
       <h1>{{ notice.subject }}</h1>
       <h2>{{ notice.registerTime }}</h2>
     </div>
-    <div class="content">
-      {{ notice.content }}
-    </div>
+    <div class="content" v-html="handleNewLine(this.notice.content)"></div>
     <div class="moveList">
       <div>
         <router-link :to="{ name: 'noticeList' }" class="moveList">
@@ -69,6 +67,10 @@ export default {
     async moveModify() {
       this.$router.push({ name: "noticeModify" });
     },
+    // 줄바꿈 처리
+    handleNewLine(str) {
+      return String(str).replace(/(?:\r\n|\r|\n)/g, "</br>");
+    },
   },
 };
 </script>
@@ -108,7 +110,7 @@ h2 {
 .moveList {
   display: flex;
   justify-content: space-between;
-  padding: 32px 0 100px 0;
+  margin: 32px 0 80px 0;
   color: blue;
   width: 100%;
 }

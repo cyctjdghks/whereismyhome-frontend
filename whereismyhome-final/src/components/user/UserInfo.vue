@@ -113,7 +113,7 @@ section {
 }
 .container {
   margin: auto;
-  margin-bottom: 30px;
+  margin-bottom: 130px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
