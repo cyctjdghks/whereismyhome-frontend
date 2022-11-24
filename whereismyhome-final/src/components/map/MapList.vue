@@ -1,11 +1,26 @@
 <template>
   <div class="container">
-    <div v-if="!isLastApart && this.deals != []">
+    <div class="like" v-if="!isLastApart && this.deals != []">
       <h1 class="like-wrapper">
         {{ this.deals[0].location }}
-        <font-awesome-icon icon="fa-solid fa-heart" />
-        <font-awesome-icon icon="fa-regular fa-heart" />
       </h1>
+      <div @click="deleteLikeDong" class="heart" v-if="userlike">
+        <font-awesome-icon icon="fa-solid fa-heart" />
+      </div>
+      <div @click="addLikeDong" class="heart" v-else>
+        <font-awesome-icon icon="fa-regular fa-heart" />
+      </div>
+    </div>
+    <div class="like" v-if="isLastApart && this.deals != []">
+      <h1 class="like-wrapper">
+        {{ this.deals[0].apartMentName }}
+      </h1>
+      <div @click="deleteLikeApt" class="heart" v-if="userlike">
+        <font-awesome-icon icon="fa-solid fa-heart" />
+      </div>
+      <div @click="addLikeApt" lass="heart" v-else>
+        <font-awesome-icon icon="fa-regular fa-heart" />
+      </div>
     </div>
     <ul v-if="this.deals.length !== 0">
       <li v-for="(deal, index) in this.deals" :key="index" class="deal-list">
@@ -51,9 +66,11 @@ location
  -->
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
-import { panTo } from "@/api/lib/kakaomap.js";
+import { mapMarker, panTo } from "@/api/lib/kakaomap.js";
 
 const mapStore = "mapStore";
+const likeStore = "likeStore";
+const memberStore = "memberStore";
 
 export default {
   name: "MapList",
@@ -74,11 +91,21 @@ export default {
 
   computed: {
     ...mapState(mapStore, ["deals", "isLastApart"]),
+    ...mapState(likeStore, ["userlike"]),
+    ...mapState(memberStore, ["userInfo"]),
   },
 
   methods: {
     ...mapMutations(mapStore, ["SET_ISDETAIL"]),
+    ...mapMutations(likeStore, ["SET_USERLIKE"]),
+    ...mapActions(likeStore, [
+      "setUserLikeApt",
+      "deleteUserLikeApt",
+      "deleteUserLikeDong",
+      "setUserLikeDong",
+    ]),
     ...mapActions(mapStore, ["getDealByApartCode", "getApartDealAmount"]),
+
     async moveApartDetail(event) {
       const dataset = event.currentTarget.dataset;
       console.log("detail apartCode: ", dataset.code, dataset.lat, dataset.lng);
@@ -96,6 +123,55 @@ export default {
       panTo(dataset.lat, dataset.lng);
       await this.getApartDealAmount(dataset.code);
       this.SET_ISDETAIL(true);
+      mapMarker(this.deals);
+    },
+    async deleteLikeDong() {
+      await this.deleteUserLikeDong({
+        id: this.userInfo.userId,
+        dongcode: this.deals[0].dongcode,
+      });
+      if (this.isWrite === false) {
+        alert(`관심 지역 삭제 실패 T-T`);
+      } else {
+        alert(`관심 지역이 삭제되었습니다.`);
+        this.SET_USERLIKE(false);
+      }
+    },
+    async addLikeDong() {
+      await this.setUserLikeDong({
+        id: this.userInfo.userId,
+        dongcode: this.deals[0].dongcode,
+      });
+      if (this.isWrite === false) {
+        alert(`관심 지역 추가 실패 T-T`);
+      } else {
+        alert(`관심 지역이 추가되었습니다.`);
+        this.SET_USERLIKE(true);
+      }
+    },
+    async deleteLikeApt() {
+      await this.deleteUserLikeApt({
+        id: this.userInfo.userId,
+        aptcode: this.deals[0].aptcode,
+      });
+      if (this.isWrite === false) {
+        alert(`관심 아파트 삭제 실패 T-T`);
+      } else {
+        alert(`관심 아파트가 삭제되었습니다.`);
+        this.SET_USERLIKE(false);
+      }
+    },
+    async addLikeApt() {
+      await this.setUserLikeApt({
+        id: this.userInfo.userId,
+        aptcode: this.deals[0].aptcode,
+      });
+      if (this.isWrite === false) {
+        alert(`관심 아파트 추가 실패 T-T`);
+      } else {
+        alert(`관심 아파트가 추가되었습니다.`);
+        this.SET_USERLIKE(true);
+      }
     },
   },
 };
@@ -152,8 +228,15 @@ h4 {
 
 .fa-heart {
   color: rgb(72, 138, 236);
+  font-size: 20px;
+  cursor: pointer;
 }
 .fa-location-dot {
   color: rgb(39, 169, 65);
+}
+
+.like {
+  display: flex;
+  align-items: center;
 }
 </style>
