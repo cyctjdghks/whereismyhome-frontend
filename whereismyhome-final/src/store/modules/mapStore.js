@@ -49,6 +49,7 @@ const mapStore = {
       state.paramQuery = query;
     },
     SET_PARAM_CODE: (state, code) => {
+      console.log(code, ".....");
       state.paramCode = code;
     },
     SET_ISLAST_APART: (state, flag) => {
