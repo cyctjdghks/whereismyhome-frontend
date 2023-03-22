@@ -6,10 +6,15 @@
 
 > __개발 기간__: 2022.11.16 ~ 2022.11.24 (약 1주) 
 
-### UCC (이미지 클릭!)
-[![클릭시 유튜브 링크로 ](/docs/image/thumbnail.png)](https://youtu.be/1zM4mftnxjI)
-### 발표자료
-[발표자료 링크](/docs/WhereIsMyHome_Presentation.pdf)
+<br>
+
+### UCC ➡ [유튜브 링크](https://youtu.be/1zM4mftnxjI)
+### 발표자료 ➡ [발표자료 링크](/docs/WhereIsMyHome_Presentation.pdf)
+### 백엔드 레포지토리 ➡ [깃허브](https://github.com/sohyeonyun/whereismyhome-backend)
+
+<br>
+
+--- 
 
 <br>
 
@@ -45,6 +50,8 @@
 
  <br/>
  <br/> 
+
+--- 
 
 ## 서비스 소개 
 공공데이터와 검색 기반으로 지역별 아파트 매매 정보를 지도로 한 눈에 파악하기 위한 서비스
@@ -94,6 +101,8 @@
 
 <br/> 
 <br/> 
+
+--- 
 
 ## ERD
 <img src = "./docs/image/ERD.png">
