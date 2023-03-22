@@ -1,5 +1,5 @@
 # WhereIsMyHome
-<img src = "./docs/image/intro.png">
+<img src = "./docs/image/main.png">
 
 > __햄버거는 맥날__  
 윤소현, 박성환 
